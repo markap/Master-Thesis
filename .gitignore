@@ -1,0 +1,9 @@
+/build/*
+!/build/main.pdf
+main.aux
+main.fdb_latexmk
+main.fls
+main.log
+missfont.log
+
+

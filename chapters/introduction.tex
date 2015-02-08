@@ -1,0 +1,20 @@
+\chapter{Introduction}\label{chapter:introduction}
+
+\section{Motivation}
+
+
+Databases are more in the center of innovation than ever. With the growing demands on storing and analyzing large amounts of data, linked with the capabilities of modern hardware, database vendors and researchers face new challenges and possibilities. 
+
+Traditionally, databases are disk-based systems separated into two parts: One system used for Online Transactional Processing (OLTP), optimized for high rates of mission-critical, transactional write requests. As second system, a Data Warehouse is used for Online Analytical Processing (OLAP), executing long-running queries to gain insight into the  collected data, used to make future business decisions upon. Due to this contradicting requirements of critical, short write requests on the one side and long running, business-intelligence gaining read requests on the other side, traditionally two separated systems are used. The data synchronization between them is ensured with an ETL process: Data is extracted from the OLTP system, transformed and loaded into the OLAP system. Since this process implicates heavy load on the database, it is usually done periodically, e.g. over night. Obviously, this architecture reveals several drawbacks, like stale data, redundancy and the maintenance cost of two systems.
+
+Modern hardware allows us to move away from this paradigm: Instead of disk-based, modern hardware allows memory-based databases. With all data residing in the memory of the hardware, an unprecedented throughput of OLTP transactions is possible. Using snapshots of the transactional data by exploiting the virtual memory management of the operating system, OLAP queries can run in parallel next to the OLTP transactions on up-to-date data. Such a system is HyPer, a relational main-memory database guaranteeing the ACID properties, actively developed at the Chair of Database Systems at TU München, and the main system used for our research. 
+The possibility of executing OLAP queries on a RDBMS without interfering the OLTP transaction throughput opens new possibilities for database systems: Additionally to long-running queries for complex data analysis, Data Mining algorithms can be integrated for more profound insight into the data. 
+In this work, the well-known k-Means algorithm is implemented in HyPer as a proof-of-concept, demonstrating the benefits of data mining operations in relational main-memory databases. First, the HyPer database is presented. Next, the term data mining is defined in greater detail and related work is presented. Then, the k-Means operator is introduced and its the implementation in HyPer is shown. Finally, extensive experiments demonstrate the benefits of k-Means in HyPer .
+
+
+\section{Research Questions}
+Research 
+
+\section{Approach}
+Approach
+
