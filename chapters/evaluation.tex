@@ -278,29 +278,112 @@ However, all tested programs differ in time per iterations in a few hundred mill
   \end{tabular}
 \end{table}
 
-\begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
-  \centering
-  \begin{tabular}{l l l l l l l l l l l l l}
-    \toprule
-      & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
-      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
-    \midrule
-      50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-
 
 \begin{figure}[htsb]
   \raggedleft
   \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/network_all}
   \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
   \label{fig:network_all}
+\end{figure}
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/50000_all}
+  \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
+  \label{fig:50000_all}
+\end{figure}
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15M_all}
+  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
+  \label{fig:15M_all}
+\end{figure}
+
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15Mxhd_all}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \label{fig:15Mxhd_all}
+\end{figure}
+
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/150M_all}
+  \caption[Large Size - Time per Iteration]{Large Size - Time per Iteration.}
+  \label{fig:150M_all}
+\end{figure}
+
+
+
+\section{Parallel Implementation}
+
+
+So far we compared the serial execution of the HyPer k-Means operator with julia and R. In 7.4 we figured out that the LLVM implementation outperforms the C++ version on all data sets we tested on. In 7.5 we compared the performance against julia and R and showed that HyPer is able to compete with the existing solutions.
+\\
+However, as data sets grow serial execution takes more and more time, making real-time data mining almost impossible. To improve performance, HyPer operators benefit from multi-threaded execution. In this section we compare the parallel implementation of the HyPer kMeans operator with the LLVM version and the R implementation. For comparison, we use the medium and the large data set.
+\\
+Table x depicts the time per iteration for k =3, 10 and 20. As before, the medium, the 90th and 95th percentile of 100 iterations on a 16 core machine are presented. For k equals 3, we see that both the R and the LLVM version are faster than the parallel version. However, with growing k, the parallel version outperforms R and the LLVM version. This is also shown in the bar chart in Figure xx.
+
+\begin{table}[htsb]
+  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
+  \label{tab:network_all}
+  \centering
+  \begin{tabular}{l l l l l l l l l l }
+    \toprule
+      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+    \midrule
+      50  & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
+      90  & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
+      95  & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+The reason for performing better than R and LLVM for growing k is the the running time of the parallel execution is almost independent of k. While R and the LLVM version grow by seconds as k grows, the parallel version grows insignificantly by around 200 milliseconds. 
+\\
+Unfortunately, for the medium size data set and small k, the parallel version cannot compete with the LLVM and R algorithm.  First, we have to take into account the overhead of the parallel process. Second, we are using the slower C++ version of the HyPer kMeans operator. Even though parts of it are parallelized, we still have all the downsides of many function calls between the runtime and the compile time system and of the high-level C++ constructs.
+
+\begin{figure}[htsb]
+  \centering
+  \includegraphics[scale=0.4, trim="0cm 1.5cm 0cm 0cm"]{figures/charts/final_15M}
+  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
+  \label{fig:final_15M}
+\end{figure}
+
+Table x shows the same experiment on the large size data set. The table shows the median, the 90th and the 95th percentile. For better visualization, the bar chart in Figure x depicts the median value of the R, LLVM and parallel execution. 
+
+\begin{table}[htsb]
+  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
+  \label{tab:network_all}
+  \centering
+  \begin{tabular}{l l l l l l l l l l }
+    \toprule
+      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+    \midrule
+      50  & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
+      90  & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
+      95  & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+This time, however, the parallel version outperforms the R and LLVM version for all k’s. Thus, the performance difference gets remarkably as k grows. We experience the same effect as for the medium size data set: A change in k affects only slightly the performance of the parallel version, while it decreases the performance of the serial implementations. 
+\\
+In the following paragraphs we look at the parallel execution in greater detail. 
+
+
+\begin{figure}[htsb]
+  \centering
+  \includegraphics[scale=0.4, trim="0cm 1.5cm 0cm 0cm"]{figures/charts/final_150M}
+  \caption[Large Size - Time per Iteration]{Large Size - Time per Iteration.}
+  \label{fig:final_150M}
 \end{figure}
 
 
