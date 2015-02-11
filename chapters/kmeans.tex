@@ -104,6 +104,6 @@ Let D(x) the shortest distance from a data point the closest, already picked cen
 Most clustering tools implement a k-means++ initialization strategy for k-means, therefore we will also test k-means++ on HyPer.
 \\
 Since the algorithm is very popular and easy to understand, makes it suitable for the first implementation of a data mining algorithm on HyPer. All data mining tools we looked at (see related work) are implementing k-Means, which makes it neat to compare regarding the running time. The cluster compactness, i.e. the sum of squared errors is a good quality measurement of the clustering, and allows very good comparability. Since the algorithm is well-defined, we can expect that the data mining tools are implementing the actual k-Means algorithms, only adapting to their programming model. Another nice fact is that many data mining tools also implement k-Means++ as initialization strategy, another thing that can be compared.
-Parts of K-means can be executed in parallel, and since HyPer supports parallel computation, it will be another interesting research to evaluate how single-threaded execution of K-means vs a multi-threaded computation. We are expecting tremendous performance gains executing HyPer on a multicore machine, and it will be interesting to compare these results to the results of big data computing, such as MapReduce or Apache 
-
-
+Parts of K-means can be executed in parallel, and since HyPer supports parallel computation, it will be another interesting research to evaluate how single-threaded execution of K-means vs a multi-threaded computation. We are expecting tremendous performance gains executing HyPer on a multicore machine, and it will be interesting to compare these results to the results of big data computing, such as MapReduce or Apache.
+\\ 
+Kkd tree maybe.
