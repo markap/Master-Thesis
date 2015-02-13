@@ -224,8 +224,6 @@ In this section we compare our serial HyPer implementation to R and Julia’s im
 \end{figure}
 
 The result of the network data set is presented in Table: network. The median, the 90th and 95th percentile are listed to show the variance of the data. As we already know, the HyPer LLVM implementation outnumbers  the C++ version. Julia is the slowest, while R competes quite well with the LLVM version and is even faster for k equals 10 and 20. Figure 1 shows the results as a boxplot.
-
-\\
 However, all tested programs differ in time per iterations in a few hundred milliseconds, therefore the differences are not very significant.
 \\
 Running the same experiment on the high dimensional data set we see a different result. As Table 2 shows, both HyPer C++ and the LLVM version are slower compared to the network data set, while R is almost the same. Interestingly, julia’s k-Means is now as fast as the R implementation, for k = 10 and 20 it is even faster. Figure xx shows this results as a boxplot. 

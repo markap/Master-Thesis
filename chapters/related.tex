@@ -3,27 +3,57 @@
 Nowadays data mining landscape can be separated in stand-alone machine learning frameworks such as WEKA and ELKI, general-purpose scientific languages such as R, Julia or the Python library SciPy, and Big Data platforms such as Apache Hadoop and Spark.
 
 \section{Research Tools}
-Weka: Weka is a data mining software providing a large collection of machine learning algorithms for all aspects of data mining like data preprocessing, classification, regression, clustering, association rule mining and visualization. It is  actively developed by the University of Waikato and gained big attention in the machine learning community over the past decade. Weka is written in Java and can be used as a stand-alone GUI tool or executed directly within Java programs. 
+\begin{itemize}
+\item Weka: Weka is a data mining software providing a large collection of machine learning algorithms for all aspects of data mining like data preprocessing, classification, regression, clustering, association rule mining and visualization. It is  actively developed by the University of Waikato and gained big attention in the machine learning community over the past decade. Weka is written in Java and can be used as a stand-alone GUI tool or executed directly within Java programs. 
 
+\item ELKI: ELKI (Environment for Developing KDD-Applications Supported by Index Structures) is a relatively new data mining framework developed by the Ludwigs-Maximilians-Universität München to implement and evaluate algorithms in the field of data mining. ELKI provides the most important algorithms for data mining, is written in Java, and provides a GUI to be easily used by data scientists.  ELKI sees itself as an implementation framework for new data mining algorithms, leading to a better comparability among them and therefore to a fairer evaluation of the newly proposed algorithm. ELKI also encourages the use of index-structures to achieve performance gains when working with high-dimensional data sets.
 
-
-ELKI: ELKI (Environment for Developing KDD-Applications Supported by Index Structures) is a relatively new data mining framework developed by the Ludwigs-Maximilians-Universität München to implement and evaluate algorithms in the field of data mining. ELKI provides the most important algorithms for data mining, is written in Java, and provides a GUI to be easily used by data scientists.  ELKI sees itself as an implementation framework for new data mining algorithms, leading to a better comparability among them and therefore to a fairer evaluation of the newly proposed algorithm. ELKI also encourages the use of index-structures to achieve performance gains when working with high-dimensional data sets.
+\end{itemize}
 
 \section{Tools for Statistical Computing}
 
-: R is a language for statistical computing and data analysis, providing a variety of data mining libraries for all aspects of data mining and machine learning. It comes with rich graphical techniques and is therefore often researchers number one tool to create graphics for publications. Most of R libraries are written in R itself, however, C, C++ and Fortran code can be called at run time and is often used for computationally-intensive tasks. Unlike ELKI and Weka, R does not provide a graphical interface, however, there exist several projects, e.g. JGR or R Commander that aim to provide a R GUI.
+\begin{itemize}
+\item R: R is a language for statistical computing and data analysis, providing a variety of data mining libraries for all aspects of data mining and machine learning. It comes with rich graphical techniques and is therefore often researchers number one tool to create graphics for publications. Most of R libraries are written in R itself, however, C, C++ and Fortran code can be called at run time and is often used for computationally-intensive tasks. Unlike ELKI and Weka, R does not provide a graphical interface, however, there exist several projects, e.g. JGR or R Commander that aim to provide a R GUI.
 
+\item SciPy: SciPy is a python environment providing several libraries to perform data mining such as NumPy, pandas and Matplotlib. As R, SciPy comes with algorithms for aggregation, clustering, classification and regression, all embedded in the Python language. Due to the elegance of the Python syntax, its popularity is growing, not only among data scientists, but also for prototyping new algorithms.
 
-SciPy: SciPy is a python environment providing several libraries to perform data mining such as NumPy, pandas and Matplotlib. As R, SciPy comes with algorithms for aggregation, clustering, classification and regression, all embedded in the Python language. Due to the elegance of the Python syntax, its popularity is growing, not only among data scientists, but also for prototyping new algorithms.
-
-Julia: Julia is a relatively new dynamic programming language for scientific computing with a main purpose on high performance. As R, Julia is a programming language itself written mainly in Julia, as well as C and Fortran to gain better performance. For data analysis, external packages are available allowing the execution of state-of-the-art data mining algorithms. Interestingly, Julia uses LLVM-based just-in-time (JIT) compilation, and therefore is often matched with the performance of C. The same compilation technique is used in HyPer, therefore it will be interesting to compare both techniques.
+\item Julia: Julia is a relatively new dynamic programming language for scientific computing with a main purpose on high performance. As R, Julia is a programming language itself written mainly in Julia, as well as C and Fortran to gain better performance. For data analysis, external packages are available allowing the execution of state-of-the-art data mining algorithms. Interestingly, Julia uses LLVM-based just-in-time (JIT) compilation, and therefore is often matched with the performance of C. The same compilation technique is used in HyPer, therefore it will be interesting to compare both techniques.
+\end{itemize}
 
 
 \section{Big Data Platforms}
+General about Big Data
+\begin{itemize}
+\item Apache Hadoop: Apache Hadoop is an open-source software for reliable, scalable, distributed computing of large datasets across clusters of computers. The heart of Hadoop is the Hadoop Distributed File System (HDFS) and Hadoop MapReduce, a simple programming model for distributed processing. Since MapReduce programs can be run on up to thousands of machines, it is ideal for Big Data. Several Algorithms can be performed on the MapReduce programming model, e.g. k-Means. For our research, it will be interesting to see how HyPer works with Big Data compared to Apache Hadoop.
 
-Apache Hadoop: Apache Hadoop is an open-source software for reliable, scalable, distributed computing of large datasets across clusters of computers. The heart of Hadoop is the Hadoop Distributed File System (HDFS) and Hadoop MapReduce, a simple programming model for distributed processing. Since MapReduce programs can be run on up to thousands of machines, it is ideal for Big Data. Several Algorithms can be performed on the MapReduce programming model, e.g. k-Means. For our research, it will be interesting to see how HyPer works with Big Data compared to Apache Hadoop.
+\item Apache Spark: Apache Spark is a data analytics cluster computing framework, working on top of the Hadoop Distributed File System (HDFS). In contrast to Hadoop’s MapReduce, Spark comes with a richer programming model, leading to tremendous performance gains for some applications. Spark also provides in-memory cluster computing, making it well-suited to data mining algorithms. Regarding the main-memory capabilities of Spark, it will be interesting to compare Spark with HyPer.
 
-Apache Spark: Apache Spark is a data analytics cluster computing framework, working on top of the Hadoop Distributed File System (HDFS). In contrast to Hadoop’s MapReduce, Spark comes with a richer programming model, leading to tremendous performance gains for some applications. Spark also provides in-memory cluster computing, making it well-suited to data mining algorithms. Regarding the main-memory capabilities of Spark, it will be interesting to compare Spark with HyPer.
+\item Apache Mahout:
+\end{itemize}
 
-\section{Databases KDD}
-MDlib, rapid miner, opencv
+\section{Knowledge Discovery in Databases}
+\begin{itemize}
+\item SAP HANA Predictive Analysis Library (PAL): SAP HANA is SAP's main memory database. Its functionality is very similar to the one that HyPer proves: It combines transactional processing (OLTP) and analytical processing (OLAP) on one system. Therefore that database and the datawarehouse are combined into one database. 
+\\
+SAP PAL is an extension for HANA to implement data mining algorithms in the areas of association, clustering and classification. The idea is similar to HyPer's: Instead of importing/exporting data to other, external tools, the best place to perform data mining algorithms is right on the database. Therefore, PAL's complex analytic computations are performed directly on the database with very high performance. The transfer time of large tables from the database to the application becomes redundant and calculations are much more inexpensive.
+
+\item Oracle: As one of the market leaders for traditional, disk-based databases, Oracle provides a lot of possibilites for data mining and knowledge discovery on their database. By default, Oracle provides its databases with the Oracle Analytical SQL Features and Functions and the Oracle Statistical Functions. Oracle Analytical SQL Features are a suite to improve the already existing SQL syntax by wider range of analytical features such as rankings, windowing and reporting aggregates. Oracle Statistical Functions enhance the normal toolset by statistics such as descriptive statistics, hypothesis testing, correlations analysis, cross tabs and the analysis of variance (ANOVA). 
+\\
+On top of this rank the Oracle Advanced Analytics Options. It provides techniques for state-of-the-art data mining technologies by implementing in-database algorithms and R algorithms, accessible via SQL and the R language. Oracle Data Mining (ODM) provides datamining algorithms directly on the the database for improvemnts in performance. Also, a importing/exporting of data to other tools becomes redundant. Users can either use the Oracle Data Miner, a work flow based GUI, or the SQL API. Oracle R Enterprise (ORE) integrates the already presented R language for statistical computing and graphics with the database. Therefore, R algorithms can be executed directly on the database without an ETL process. Base R and popular R packages can be executed in-database, while every R package can be executed with embedded R while the database manages the data loading. This allows data scientists to write their own R packages and extension and bring the code to the database.
+
+\end{itemize}
+
+\section{Middleware Tools}
+\begin{itemize}
+\item MADlib: MADlib is an open-source library providing a suite of SQL-based algorithms for machine learning, data mining and statistics, that can run with scale within a database engine. Therefore, it is not need to import/export data with an ETL process to other tools. The analytic methods can be installed and executed within a relational data base engine as long the engine supports extensible SQL. So far, MADLib works with Postgres, Pivotal Greenplum and Pivotal HAWQ.
+\\
+MADlib's main functionality is written in declarative SQL statements which organize the date movement to and from disk on the current or on network machines. Loops running on a single CPU can benefit from SQL extensibility and call high performance math libraries in user defined functions. Higher level tasks can be implemented in Python code, that drives the algorithms and invokes data-rich computations that are computed in the database.
+\\
+More details in the paper.
+
+\item RapidMiner: RapidMiner is another tool for predictive analysis with a strong focus on visual development. It's main goals are low entry barriers and quick speed up. It's main audience is not only Data Scientists and IT Specialists, but also the business department and stakeholders. Therefore RapidMiner sees itself as collaboration tool. The main feature for end users of RapidMiner is the graphical user interface to  design data analysis routines. Therefore data mining queries can be created with a few clicks only.
+\\
+RapidMiner provides three different analytic engines to deal with different data volumes, data variety and velocity of data. In general, all analytical algorithms and computations are in-memory. Since random access is often necessary for data mining algorithms this is often the fastest approach for medium size data sets. In-database mining brings the algorithms into the database, therefore the loading phase to get the data is abolished. This solution is offered for different database systems utilizing database functionality. And finally, in-hadoop compuations allows to combine the user interface of RapidMiner with the workflows of Hadoop Clusters. Therefore terabytes and petabytes of data can be analyzed with RapidMiner.
+\\ 
+For our use case, the in-database processing of RapidMiner seems the closest related to our approach. However, the in-database engine is designed for performance, but for high data locality. That means that no ETL process is necessary if algorithms are executed on the database. However, RapidMiner's performance is best if the data is first loaded and executed in the in-memory engine.
+\end{itemize}
