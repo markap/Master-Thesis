@@ -41,17 +41,15 @@ To provide an objective comparison the execution time per iteration is measured.
 
 \section{Used Tools}
 
-As already described in the related research section, there are many tools implementing a kMeans clustering. One of the main criteria of the selection of tools is to make the results comparable. Therefore, we use only tools that give enough information about the clustering process, e.g. number of iterations, total cost and most important, the applied algorithm. Not all tools are implementing the Lloyd algorithm, e.g. the default version of R is the Hartigan-Won algorithm, an improvement of the standard Lloyed algorithm.
+As already described in chapter \ref{chapter:related}, there exist many tools for data mining. In this chapter we compare a selection of tools implementing the k-Means clustering algorithm with our k-Means HyPer operator. To make the results comparable in a fair manner, we use only tools that give enough information about the clustering process, e.g. number of iterations, total cost and most important, the applied algorithm. Not all tools are implementing the Lloyd algorithm, e.g. the default version of R is the Hartigan-Wong algorithm, an improvement over the standard Lloyed algorithm.
 \\
-Since kMeans is a non-deterministic algorithm, the number of iterations is another very important criteria to make the results comparable. Running time of kMeans depends much on how many iterations the algorithm has to made, which depends on a random initialization. Therefore the running time should be relative to the number of iterations.
+Since k-Means is a non-deterministic algorithm, the number of iterations is another important criteria to make the results comparable. Running time of k-Means depends almost entirely on the number of iterations the algorithm has to make, which depends on the initialization. Therefore the running time should be relative to the number of iterations.
 \\
-Unfortunately, neither Elki nor Scipy’s kMeans implementation provide the number of iterations as result. Therefore, a fair comparison is not possible.
+Unfortunately, neither ELKI nor Scipy’s k-Means implementation provide the number of iterations as result. Therefore, a fair comparison is not possible. Weka, R and Julia provide good configuration possibilities as well as a result set that contains information about the number of iterations. Weka is written in Java, while R and Julia are both written in a high level language. Even though, critical code parts are written in C, C++ and Fortran for better performance results, without the overhead of an entire database system behind. Therefore it will be interesting to compare Hyper with the Java written Weka and the optimized R and Julia.
 \\
 weka, big data?
+why not others?
 weka arrf format -> loading time, results etc.
-\\
-R and julia provide good configuration possibilities as well as a result set that contains information about number of iterations, total cost etc. Although both tools are written in a high level language, critical code parts are written in C, C++ and Fortran, without the overhead of an entire database system. Therefore it will be interesting to compare Hyper with julia and R.
-
 
 \section{Serial Implementation}
 
@@ -198,7 +196,7 @@ Furthermore the execution time grows by number of instances and is much faster f
 
 \section{Performance Test}
 
-In this section we compare our serial HyPer implementation to R and Julia’s implementation of the k-Means algorithm. As algorithm, the Lloyd algorithm with a maximum iteration number of ten is chosen. Apart from the large data set, the algorithm is executed 100 times for $k = 3, 10$ and $20$, respectively. For the large data set, the algorithm is only executed ten times. The result is then presented as the execution time per iteration. For each algorithm the median, the 90th percentile and the 95th percentile is given for every $k$. 
+In this section we compare our serial HyPer implementations to Weka, R and Julia’s implementation of the k-Means algorithm. As algorithm, the Lloyd algorithm with a maximum iteration number of ten is chosen. Apart from the large data set, the algorithm is executed 100 times for $k = 3, 10$ and $20$, respectively. For the large data set, the algorithm is executed ten times. The result is then presented as the execution time per iteration. For each algorithm the median, the 90th percentile and the 95th percentile are given for every $k$. 
 \\
 \begin{table}[htsb]
   \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
