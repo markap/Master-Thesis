@@ -238,17 +238,39 @@ In conclusion, the experiments show that HyPer’s k-Means operator can compete 
 
 
 \begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
+  \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
+  \label{tab:highdim_all}
   \centering
   \begin{tabular}{l l l l l l l l l l l l l}
     \toprule
       & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 0.04 & 0.05 & 0.07 & 0.03 & 0.05 & 0.08 & 0.18 & 0.24 & 0.35 & 0.13 & 0.16 & 0.22 \\
+      50  & 0.04 & 0.05 & 0.07 & 0.04 & 0.06 & 0.10 & 0.21 & 0.34 & 0.40 & 0.13 & 0.16 & 0.22 \\
+      50  & 0.04 & 0.05 & 0.07 & 0.05 & 0.07 & 0.11 & 0.22 & 0.35 & 0.44 & 0.13 & 0.17 & 0.22 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Verhaeltnis: um wie viel schlechter wirds im vergleich zum network set?
+verhaeltnis zu einander
+verhaeltnis zu den ks
+
+
+
+\begin{table}[htsb]
+  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
+  \label{tab:medium_all}
+  \centering
+  \begin{tabular}{l l l l l l l l l l l l l}
+    \toprule
+      & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+    \midrule
+      50  & 5.42 & 7.61 & 10.62 & 0.77 & 1.61 & 2.50 & 2.38 & 3.29 & 4.68 & 0.92 & 2.10 & 3.46 \\
+      50  & 5.43 & 7.65 & 10.71 & 0.79 & 1.63 & 2.55 & 2.57 & 3.44 & 4.77 & 0.94 & 2.14 & 3.51 \\
+      50  & 5.44 & 7.70 & 10.91 & 0.80 & 1.63 & 2.56 & 2.64 & 3.45 & 4.84 & 0.94 & 2.14 & 3.52 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -256,17 +278,17 @@ In conclusion, the experiments show that HyPer’s k-Means operator can compete 
 
 
 \begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \label{tab:medium_hd_all}
   \centering
   \begin{tabular}{l l l l l l l l l l l l l}
     \toprule
       & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 11.46 & 15.69 & 21.67 & 9.43 & 15.48 & 23.77 & 16.39 & 34.12 & 59.40 & 10.42 & 22.11 & 38.80 \\
+      50  & 11.51 & 15.81 & 21.69 & 9.50 & 15.50 & 23.79 & 16.77 & 36.11 & 59.53 & 10.44 & 22.12 & 38.84 \\
+      50  & 11.65 & 15.83 & 21.70 & 9.64 & 15.58 & 23.79 & 17.29 & 42.15 & 59.57 & 10.45 & 22.13 & 38.84 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -274,7 +296,7 @@ In conclusion, the experiments show that HyPer’s k-Means operator can compete 
 
 
 \begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
+  \caption[Large Size - Time per Iteration]{Large Size - Time per Iteration.}
   \label{tab:network_all}
   \centering
   \begin{tabular}{l l l l l l l l l l l l l}
@@ -282,27 +304,9 @@ In conclusion, the experiments show that HyPer’s k-Means operator can compete 
       & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-
-
-\begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
-  \centering
-  \begin{tabular}{l l l l l l l l l l l l l}
-    \toprule
-      & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
-      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
-    \midrule
-      50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 65.62 & 90.37 & 132.39 & 29.47 & 48.21 & 72.40 & 37.29 & 62.01 & 92.60 & 18.38 & 40.49 & 67.25 \\
+      50  & 65.72 & 92.01 & 135.87 & 30.80 & 54.73 & 77.27 & 37.50 & 62.41 & 92.86 & 18.44 & 40.72 & 67.57 \\
+      50  & 65.78 & 92.27 & 137.21 & 33.08 & 55.02 & 77.97 & 37.52 & 62.72 & 92.95 & 18.46 & 40.72 & 67.63 \\
     \bottomrule
   \end{tabular}
 \end{table}
