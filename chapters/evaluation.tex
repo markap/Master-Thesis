@@ -166,8 +166,6 @@ Obviously the execution time for the high dimensional data set is much larger ag
 \end{figure}
 
 
-
-
 ~\autoref{tab:large_serial} shows the same experiment for the large data set. The data set consists of ten dimensions and therefore the compilation time increases compared to the data sets with four dimensions by a factor of around 2. Since the data set has a size of 5.59 GB the difference in the execution time is very significant. Again, the LLVM implementation is faster by around 20 seconds independent of the cluster number $k$.
 
 
@@ -196,11 +194,11 @@ Furthermore the execution time grows by number of instances and is much faster f
 
 \section{Performance Test}
 
-In this section we compare our serial HyPer implementations to Weka, R and Julia’s implementation of the k-Means algorithm. As algorithm, the Lloyd algorithm with a maximum iteration number of ten is chosen. Apart from the large data set, the algorithm is executed 100 times for $k = 3, 10$ and $20$, respectively. For the large data set, the algorithm is executed ten times. The result is then presented as the execution time per iteration. For each algorithm the median, the 90th percentile and the 95th percentile are given for every $k$. 
+In this section we compare our serial HyPer implementations with Weka, R and Julia’s implementation of the k-Means algorithm. As algorithm, the Lloyd algorithm with a maximum iteration number of ten is chosen. Apart from the large data set, the algorithm is executed 100 times for $k = 3, 10$ and $20$, respectively. For the large data set, the algorithm is executed ten times. The result is then presented as the execution time per iteration. For each algorithm the median, the 90th percentile and the 95th percentile are given for every $k$. 
 \\
 \begin{table}[htsb]
   \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
+  \label{tab:network_all1}
   \centering
   \begin{tabular}{l l l l l l l l l l l l l}
     \toprule
@@ -208,8 +206,8 @@ In this section we compare our serial HyPer implementations to Weka, R and Julia
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
       50  & 0.21 & 0.22 & 0.29 & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 0.27 & 0.30 & 0.32 & 0.06 & 0.06 & 0.10 & 0.09 & 0.12 & 0.20 & 0.03 & 0.06 & 0.10 \\
+      50  & 0.31 & 0.35 & 0.35 & 0.08 & 0.07 & 0.11 & 0.10 & 0.13 & 0.22 & 0.03 & 0.06 & 0.10 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -221,21 +219,7 @@ In this section we compare our serial HyPer implementations to Weka, R and Julia
   \label{fig:network_all}
 \end{figure}
 
-The result of the network data set is presented in Table: network. The median, the 90th and 95th percentile are listed to show the variance of the data. As we already know, the HyPer LLVM implementation outnumbers  the C++ version. Julia is the slowest, while R competes quite well with the LLVM version and is even faster for k equals 10 and 20. Figure 1 shows the results as a boxplot.
-However, all tested programs differ in time per iterations in a few hundred milliseconds, therefore the differences are not very significant.
-\\
-Running the same experiment on the high dimensional data set we see a different result. As Table 2 shows, both HyPer C++ and the LLVM version are slower compared to the network data set, while R is almost the same. Interestingly, julia’s k-Means is now as fast as the R implementation, for k = 10 and 20 it is even faster. Figure xx shows this results as a boxplot. 
-\\
-This result gives us interesting knowledge about the implementation. An increase in dimensions and decrease in instances does not affect R significantly. On the other hand, julia shows much better results as dimensions increases and seems to be optimized for high dimensions. Both HyPer implementations cannot compete with R and julia regarding the running time. As we already observed comparing the two implementations in greater detail in section 7.2x, the compilation time of the two operators is quite high when using high dimensional data.
-\\
-For comparison, Figure x shows the same boxplot of the high dimensional data, but this time omitting the compilation time for the two HyPer implementations. This time, for k=3, the LLVM version is the fastest, while with growing k R and julia are faster, but not that significantly anymore. The C++ version remains the slowest. However, this result shows that the code generation for high dimensional data sets with less instances is not optimal and can be a ?ansatz? for future optimization.
-\\
-Next, we discuss the performance on medium and large size data sets with four and ten dimensions, respectively. This time, the compilation time should not be a limiting factor. Table M and Figure M show the results for  the medium size data set. This time, julia performs the worst followed by the C++ implementation. LLVM and R are quite close, even though for growing k R outperforms the LLVM version. 
-\\
-Regarding the large data set, the order changed. Julia and the HyPer’s C++ version are still slow, while the LLVM version outperforms the R version as Table L and Figure L show.
-\\
-In conclusion, the experiments show that HyPer’s k-Means operator can compete with existing tools for clustering. Rearding the LLVM implementation, HyPer and R show the best results. Only for the high dimensional data set, julia shows the best results. If we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these result are very affirmative for future improvements and the implementations of other operators on HyPer.
-
+The result is presented in~\autoref{tab:network_all1}. We already know that the HyPer LLVM implementation outnumbers the C++ version. For the median, the LLVM implementation is 3.4, 1.8 and 1.5 times faster for $k = 3, 10$ and $20$. Julia is the slowest, our LLVM implementation is 9.5, 4.0 and 3.1 for $k = 3, 10, 20$ times faster. Only the R implementation can compete with our HyPer operator and is even a bit faster. However, all tested programs differ in time per iterations in a few hundred milliseconds therefore the differences are not very significant.~\autoref{fig:network_all} shows the results as a boxplot.
 
 \begin{table}[htsb]
   \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
@@ -253,11 +237,18 @@ In conclusion, the experiments show that HyPer’s k-Means operator can compete 
   \end{tabular}
 \end{table}
 
-Verhaeltnis: um wie viel schlechter wirds im vergleich zum network set?
-verhaeltnis zu einander
-verhaeltnis zu den ks
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/50000_all}
+  \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
+  \label{fig:50000_all}
+\end{figure}
 
 
+
+Running the same experiment on the high dimensional data set we see a different result as depicted in~\autoref{tab:highdim_all}. As already shown, the HyPer C++ and the LLVM version are slower compared to the network data set even though the data set is smaller by size. R takes almost the same time for both data sets. Interestingly, Julia’s k-Means is now as fast as the R implementation, for $k = 10$ and 20 it is even faster.~\autoref{fig:50000_all} shows this results as a boxplot. 
+\\
+This result gives us interesting knowledge about the different implementations. Both HyPer operators perform poorly when dimensions increase. An increase in dimensions and a decrease in instances does not affect R significantly. On the other hand, Julia shows much better results as dimensions increases and seems to be optimized for high dimensions: It is 5.4, 4.4 and 4.2 faster for $k = 3, 10$ and 20 times on the high dimensional set compared to the network data. 
 
 \begin{table}[htsb]
   \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
@@ -275,8 +266,6 @@ verhaeltnis zu den ks
   \end{tabular}
 \end{table}
 
-
-
 \begin{table}[htsb]
   \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
   \label{tab:medium_hd_all}
@@ -292,6 +281,41 @@ verhaeltnis zu den ks
     \bottomrule
   \end{tabular}
 \end{table}
+
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15M_all}
+  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
+  \label{fig:15M_all}
+\end{figure}
+
+
+\begin{figure}[htsb]
+  \raggedleft
+  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15Mxhd_all}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \label{fig:15Mxhd_all}
+\end{figure}
+
+
+
+We run the same experiment on the medium size and the medium size high dimensional data set.~\autoref{tab:medium_all} shows the results of the medium size data set. Again, the LLVM version is faster than the C++ version by a factor of 2.5, 1.6 and 1.4 for $k = 3, 10$ and $20$. Since the dataset has only four dimensions Julia performs poorly and is by a factor of 5.9, 3.6 and 3.1 slower compared to the LLVM version. As for the network data set R demonstrates the best performance and is faster than LLVM by a factor of 0.8 for $k = 3$ and 10 and 0.7 for $k = 20$.~\autoref{fig:medium_all} shows the results as a boxplot.
+\\
+For comparison~\autoref{tab:medium_hd_all} and ~\autoref{fig:medium_hd_all} depict the result for the medium size high dimensional data set. As before, our own implementation does not perform ideally on high dimensions. For small $k = 3$, the LLVM version is slower than R by a factor of 0.9 but faster than Julia for a factor of 1.1. However, as $k$ grows, R and Julia show slightly better results. Both show a speed up by a factor of 0.7 for $k = 10$, and 0.6 for $k = 20$. 
+\\
+Obviously the high dimensional data set takes more time per iteration having a constant number of instances. Julia shows a slow down by a factor of 2 for all $k$'s, R by a factor of 12 for $k = 3$ and 10 for $k = 10$ and 20, the C++ version by a factor of 7, 10, 13 for $k = 3, 10$ and 20 and the LLVM version by a factor of 11 for all $k$'s. Julia perform again the best for high dimensional data. R and HyPer's LLVM operator behave very similar this time. An explanation is that the compilation time is not a limiting factor anymore for the LLVM implementation. For the high dimensional data set with 50000 instances the compilation time is higher than the execution time. This time the data set consists of 15 millions tuples therefore the poor compilation time does not affect the overall performance anymore.
+\\
+Regarding the large data set, the order changed. Julia and the HyPer’s C++ version are still slow, while the LLVM version outperforms the R version as Table L and Figure L show.
+\\
+In conclusion, the experiments show that HyPer’s k-Means operator can compete with existing tools for clustering. Rearding the LLVM implementation, HyPer and R show the best results. Only for the high dimensional data set, julia shows the best results. If we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these result are very affirmative for future improvements and the implementations of other operators on HyPer.
+\\
+Verhaeltnis: um wie viel schlechter wirds im vergleich zum network set?
+verhaeltnis zu einander, vor allem beim large data set
+verhaeltnis zu den ks
+
+
+
 
 
 
@@ -313,28 +337,6 @@ verhaeltnis zu den ks
 
 
 
-
-\begin{figure}[htsb]
-  \raggedleft
-  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/50000_all}
-  \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
-  \label{fig:50000_all}
-\end{figure}
-
-\begin{figure}[htsb]
-  \raggedleft
-  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15M_all}
-  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
-  \label{fig:15M_all}
-\end{figure}
-
-
-\begin{figure}[htsb]
-  \raggedleft
-  \includegraphics[scale=0.4, trim="0cm 1cm 0cm 0cm"]{figures/charts/15Mxhd_all}
-  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
-  \label{fig:15Mxhd_all}
-\end{figure}
 
 
 \begin{figure}[htsb]
