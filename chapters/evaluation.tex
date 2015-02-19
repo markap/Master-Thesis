@@ -51,7 +51,25 @@ weka, big data?
 why not others?
 weka arrf format -> loading time, results etc.
 
-\section{Serial Implementation}
+\begin{table}[htsb]
+  \caption[Weka Results - Time per Iteration]{Weka Results - Time per Iteration.}
+  \label{tab:weka_final}
+  \centering
+  \begin{tabular}{l l l l l l l l l l }
+    \toprule
+      & \multicolumn{3}{c}{Network 3D} & \multicolumn{3}{c}{High Dimensional} & \multicolumn{3}{c}{Medium Size}  \\
+      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+    \midrule
+      50  & 1.39 & 1.54 & 1.93 & 1.08 & 1.39 & 1.90 & 54.01 & 58.25 & 71.11 \\
+      90  & 1.48 & 1.60 & 2.02 & 1.16 & 1.44 & 1.98 &59.16 & 62.54 & 87.16 \\
+      95  & 1.49 & 1.61 & 2.06 & 1.19 & 1.46 & 2.01 & 59.79 & 64.31 & 88.54 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+
+\section{Serial Implementation}\label{section:serial}
 
 In this section we compare the two serial HyPer k-Means implementations: The C++ driven and the LLVM driven approach. For comparison we consider the compilation and the execution time. The compilation time is the time for generating LLVM code, while the execution time is the execution of the k-Means algorithm. Since the compilation time can be seen as a one-time setup time, we expect the execution time to be much larger. 
 \\
@@ -192,7 +210,7 @@ In conclusion the compilation time is not affected if the number of instances ge
 Furthermore the execution time grows by number of instances and is much faster for the LLVM implementation. With equality regarding the compilation and a performance decrease in execution time the LLVM version was for all experiments the best choice regarding the running time of the k-Means algorithm.
 
 
-\section{Performance Test}
+\section{Performance Test}\label{section:performance}
 
 In this section we compare our serial HyPer implementations with Weka, R and Julia’s implementation of the k-Means algorithm. As algorithm, the Lloyd algorithm with a maximum iteration number of ten is chosen. Apart from the large data set, the algorithm is executed 100 times for $k = 3, 10$ and $20$, respectively. For the large data set, the algorithm is executed ten times. The result is then presented as the execution time per iteration. For each algorithm the median, the 90th percentile and the 95th percentile are given for every $k$. 
 \\
@@ -306,22 +324,16 @@ For comparison~\autoref{tab:medium_hd_all} and ~\autoref{fig:medium_hd_all} depi
 \\
 Obviously the high dimensional data set takes more time per iteration having a constant number of instances. Julia shows a slow down by a factor of 2 for all $k$'s, R by a factor of 12 for $k = 3$ and 10 for $k = 10$ and 20, the C++ version by a factor of 7, 10, 13 for $k = 3, 10$ and 20 and the LLVM version by a factor of 11 for all $k$'s. Julia perform again the best for high dimensional data. R and HyPer's LLVM operator behave very similar this time. An explanation is that the compilation time is not a limiting factor anymore for the LLVM implementation. For the high dimensional data set with 50000 instances the compilation time is higher than the execution time. This time the data set consists of 15 millions tuples therefore the poor compilation time does not affect the overall performance anymore.
 \\
-Regarding the large data set, the order changed. Julia and the HyPer’s C++ version are still slow, while the LLVM version outperforms the R version as Table L and Figure L show.
+As final test we perform the same experiment on the large data set containing 150 million instances, as shown in~\autoref{tab:150M_all}. This time the HyPer LLVM implementation outnumbers all the other tools, the C++ version by a factor of 2.0, 1.5 and 1.4 for $k = 3, 10$ and 20, Julia by a factor of 3.6, 2.2, 2.0, respectively, and even R by a factor of 1.6, 1.2 and 1.1, respectively. This is also shown by a boxplot in~\autoref{fig:150M_all}. Julia's performance is quite compared to the other tools since the data set consist only of ten dimensions. For growing $k$, the R implementation comes very close to the HyPer LLVM version.
 \\
-In conclusion, the experiments show that HyPer’s k-Means operator can compete with existing tools for clustering. Rearding the LLVM implementation, HyPer and R show the best results. Only for the high dimensional data set, julia shows the best results. If we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these result are very affirmative for future improvements and the implementations of other operators on HyPer.
-\\
-Verhaeltnis: um wie viel schlechter wirds im vergleich zum network set?
-verhaeltnis zu einander, vor allem beim large data set
-verhaeltnis zu den ks
-
-
+In conclusion the experiments show that HyPer’s k-Means operator can compete with state-of-the-art tools for clustering. Particularly the LLVM implementation demonstrates a good performance and shows similar results to the R implementation of the k-Means algorithm. For high dimensional data sets the LLVM implementation does not perform ideally and is outnumbered by Julia's implementation optimized for high dimensions. If we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these results are affirmative for future development and the implementations of other operators on HyPer. 
 
 
 
 
 \begin{table}[htsb]
   \caption[Large Size - Time per Iteration]{Large Size - Time per Iteration.}
-  \label{tab:network_all}
+  \label{tab:150M_all}
   \centering
   \begin{tabular}{l l l l l l l l l l l l l}
     \toprule
@@ -351,32 +363,29 @@ verhaeltnis zu den ks
 \section{Parallel Implementation}
 
 
-So far we compared the serial execution of the HyPer k-Means operator with julia and R. In 7.4 we figured out that the LLVM implementation outperforms the C++ version on all data sets we tested on. In 7.5 we compared the performance against julia and R and showed that HyPer is able to compete with the existing solutions.
+So far we only looked at the serial execution of the HyPer k-Means operator: In Section~\ref{section:serial}  we figured out that the LLVM implementation outperforms the C++ version on all used data sets. In Section~\ref{section:performance} we compared the performance against Julia and R and showed that HyPer is able to compete with state-of-the-art technologies for data mining.
 \\
-However, as data sets grow serial execution takes more and more time, making real-time data mining almost impossible. To improve performance, HyPer operators benefit from multi-threaded execution. In this section we compare the parallel implementation of the HyPer kMeans operator with the LLVM version and the R implementation. For comparison, we use the medium and the large data set.
-\\
-Table x depicts the time per iteration for k =3, 10 and 20. As before, the medium, the 90th and 95th percentile of 100 iterations on a 16 core machine are presented. For k equals 3, we see that both the R and the LLVM version are faster than the parallel version. However, with growing k, the parallel version outperforms R and the LLVM version. This is also shown in the bar chart in Figure xx.
+However as data sets grow serial execution takes more and more time, making real-time data mining almost impossible. Furthermore, we do not exploit the modern hardware of database systems and the advantages of multi-threaded execution. In this section we compare the parallel implementation of the HyPer k-Means operator with the LLVM version and the R implementation. Both tools demonstrate the best results on the medium size, the medium size high dimensional and the large data set. 
 
 \begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
+  \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
+  \label{tab:medium_final}
   \centering
   \begin{tabular}{l l l l l l l l l l }
     \toprule
-      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer LLVM} & \multicolumn{3}{c}{HyPer Parallel}  \\
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      90  & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      95  & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 0.77 & 1.61 & 2.50 & 0.92 & 2.10 & 3.46 & 1.35 & 1.52 & 1.75 \\
+      90  & 0.79 & 1.63 & 2.55 & 0.94 & 2.14 & 3.51 & 1.38 & 1.53 & 1.84 \\
+      95  & 0.80 & 1.63 & 2.56 & 0.94 & 2.14 & 3.52 & 1.40 & 1.53 & 1.85 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-
-The reason for performing better than R and LLVM for growing k is the the running time of the parallel execution is almost independent of k. While R and the LLVM version grow by seconds as k grows, the parallel version grows insignificantly by around 200 milliseconds. 
+~\autoref{tab:medium_final} shows the result as the time per iteration for $k = 3, 10$ and 20. As before, the median, the 90th and 95th percentile are presented. For $k = 3$, we see that both the R and the LLVM version are faster than the parallel version. However, as k grows, the parallel version outperforms R and the LLVM version. This circumstance is also shown in the bar chart in~\autoref{fig:medium_final}.
 \\
-Unfortunately, for the medium size data set and small k, the parallel version cannot compete with the LLVM and R algorithm.  First, we have to take into account the overhead of the parallel process. Second, we are using the slower C++ version of the HyPer kMeans operator. Even though parts of it are parallelized, we still have all the downsides of many function calls between the runtime and the compile time system and of the high-level C++ constructs.
+The reason is that for the parallel execution the running time is almost independent of $k$, threfore the parallel version outperforms R and LLVM: For R, the time per iterations grows by a factor of 2.1 from $k = 3$ to $k = 10$, and by a factor of 1.6 from $k = 10$ to $k = 20$, and for LLVM by a factor of 2.3 and 1.6, respectively. In contrast, the parallel implementation grows only by factor of 1.1 and 1.2, respectively. Therefore, R and the LLVM version grow by seconds as $k$ grows, while the parallel version grows insignificantly by around 200 milliseconds. 
 
 \begin{figure}[htsb]
   \centering
@@ -385,28 +394,57 @@ Unfortunately, for the medium size data set and small k, the parallel version ca
   \label{fig:final_15M}
 \end{figure}
 
-Table x shows the same experiment on the large size data set. The table shows the median, the 90th and the 95th percentile. For better visualization, the bar chart in Figure x depicts the median value of the R, LLVM and parallel execution. 
+~\autoref{tab:medium_hd_final} shows the same experiment on the medium high dimensional data set. For this data set the parallel version outperforms the other two implementations for all $k$'s, even for $k = 3$.~\autoref{fig:medium_hd_final} depicts that the parallel version in again almost independent of $k$, in contrast to R and LLVM: R grows by a factor of 1.6 from $k = 3$ to $k = 10$, and 1.5 from $k = 10$ to $k = 20$, and for LLVM 2.1 and 1.8, respectively. The parallel version starts at low 5.84 seconds and grows by a factor 1.4 from $k = 10$ and $k = 20$. 
+\\
+So this time, the parallel version not as independent by the cluster number $k$ as for the low dimensional data set of same size. Instead, the performance gain results in the ability to handle high dimensional data better: From four dimensions to 50 dimension, the parallel execution time is only affected by a factor of 4.3, 5.3 and 6.5 for $k = 3, 10$ and 20. R and LLVM are affected by a much higher factor: 12.3, 9.6 and 9.5 for R, 11.3, 10.5 and 11.2 for the LLVM implementation. Only the for high dimensions optimized Julia shows with a factor of 2.1, 2.1 and 2.0 better results.
 
 \begin{table}[htsb]
-  \caption[3D Network - Time per Iteration]{3D Network - Time per Iteration.}
-  \label{tab:network_all}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \label{tab:medium_hd_final}
   \centering
   \begin{tabular}{l l l l l l l l l l }
     \toprule
-      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer LLVM} & \multicolumn{3}{c}{HyPer Parallel}  \\
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 0.03 & 0.04 & 0.08 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      90  & 0.06 & 0.06 & 0.09 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & 0.10 \\
-      95  & 0.08 & 0.07 & 0.10 & 0.08 & 0.10 & 0.14 & 0.02 & 0.06 & nnnn \\
+      50  & 9.43 & 15.48 & 23.77 & 10.42 & 22.11 & 38.80 & 5.84 & 8.04 & 11.30 \\
+      90  & 9.50 & 15.50 & 23.79 & 10.44 & 22.12 & 38.84 & 5.88 & 8.26 & 11.35 \\
+      95  & 9.64 & 15.58 & 23.79 & 10.45 & 22.13 & 38.84 & 5.88 & 8.29 & 11.37 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 
-This time, however, the parallel version outperforms the R and LLVM version for all k’s. Thus, the performance difference gets remarkably as k grows. We experience the same effect as for the medium size data set: A change in k affects only slightly the performance of the parallel version, while it decreases the performance of the serial implementations. 
+
+\begin{figure}[htsb]
+  \centering
+  \includegraphics[scale=0.4, trim="0cm 1.5cm 0cm 0cm"]{figures/charts/15Mxhd_final}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \label{fig:final_150M}
+\end{figure}
+
+Finally,~\autoref{tab:large_final} shows the results of the same experiment on the large data set. Again, the parallel is the fastest. For $k = 3$, the parallel version is faster than R by a factor of 1.8 and for LLVM by a factor of 1.1. For $k = 10$ the factor is even larger, 2.4 for R and 2.0 for LLVM, and 3.0 and 2.8 for $k = 20$, respectively. Since $k$ affects the performance of the parallel version only slightly, the factor is increasing as $k$ increases.
 \\
-In the following paragraphs we look at the parallel execution in greater detail. 
+To conclude, except for the medium size data set and $k = 3$ the parallel version is much better than the LLVM and R algorithm. However, since we are using 16 cores even a higher speed up would be possible. As explanation, we have to take into account the overhead of the parallel process. Furthermore, we are using the slower C++ version of the HyPer k-Means operator as foundation for our parallel implementation. Even though parts of the algorithm are parallelized, we still have all the downsides of many function calls between the runtime and the compile time system and of the high-level C++ constructs. And finally, we parallize only the computation of the distances, not the cluster update.
+
+
+\begin{table}[htsb]
+  \caption[Large Size - Time per Iteration]{Large Size - Time per Iteration.}
+  \label{tab:large_final}
+  \centering
+  \begin{tabular}{l l l l l l l l l l }
+    \toprule
+      & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer LLVM} & \multicolumn{3}{c}{HyPer Parallel}  \\
+      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+    \midrule
+      50  & 29.47 & 48.21 & 72.40 & 18.38 & 40.49 & 67.25 & 16.71 & 19.79 & 24.03 \\
+      90  & 30.80 & 54.73 & 77.27 & 18.44 & 40.72 & 67.57 & 16.94 & 20.13 & 24.33 \\
+      95  & 33.08 & 55.02 & 77.97 & 18.46 & 40.72 & 67.63 & 17.01 & 20.17 & 24.36 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
 
 
 \begin{figure}[htsb]
