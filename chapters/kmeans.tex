@@ -1,22 +1,23 @@
 \chapter{The k-Means Clustering Algorithms}\label{chapter:kmeans}
 
-\section{Motivation}
+In this chapter the data mining algorithm k-Means is presented. K-means is a well-studied clustering algorithms, partitioning a data set into $k$ clusters, where all data objects within a cluster are similar to each other and dissimilar to the data objects in the other clusters. The goal is to find the best clustering, minimizing the total squared distance between each data point and its assigned center. While the solution to that problem is NP-hard, there are several heuristics, in particular the Lloyd algorithm, which is a local search solution to this problem.
 
-In this work, the data mining algorithm k-Means will be implemented in HyPer using the operator model, in order to show a proof-of-concept implementation.
+\section{Motivation}
+ 
+We decided to use the k-Means algorithms as proof-of-concept algorithm for data mining in the HyPer database because it is an algorithm widely used and very popular. In fact, a survey of clustering data mining techniques in 2002 states that the algoritm “is by far the most popular clustering algorithm used in scientific and industrial applications”. K-means is also part of the 10 top data mining algorithms identified by the IEEE International Conference on Data Mining (ICDM) in December 2006, next to other famous algorithms such as SVM and the PageRank algorithm. 
 \\
-K-means is a well-studied clustering algorithms, partitioning a data set into k clusters, where all data objects within a cluster are similar to each other, and dissimilar to the data objects in the other cluster. The goal is to find the best clustering, minimizing the total squared distance between each data point and its assigned center. While the solution to that problem is NP-hard, there are several heuristics, in particular the Lloyed algorithm, which is a local search solution to this problem. 
-\\
-The algorithm is one of the most popular data mining algorithms. In fact, a survey of clustering data mining techniques in 2002 states that the algoritm “is by far the most popular clustering algorithm used in scientific and industrial applications”. K-means is also part of the 10 top data mining algorithms identified by the IEEE International Conference on Data Mining (ICDM) in December 2006, next to other famous algorithms such as SVM and PageRank. 
+Since the algorithm is very popular and easy to understand, makes it suitable for the first implementation of a data mining algorithm on HyPer. To our best knowledge, all major data mining tools are implementing k-Means, which makes it neat to compare regarding the running time. The cluster compactness, i.e. the sum of squared errors is a good quality measurement of the clustering, and allows very good comparability. 
+Parts of K-means can be executed in parallel, and since HyPer supports parallel computation, it will be another interesting research to evaluate how single-threaded execution of K-means vs a multi-threaded computation. We are expecting tremendous performance gains executing HyPer on a multicore machine.
 
 \section{The Lloyd Algorithms}
 
-In the following paragraph we explain the Lloyed algorithm, usually referred as k-Means in literature and in this work as well. The algorithm starts with k arbitrary center points, typically chosen at random from the data points. Then, each data point is assigned to the closest center, using a distance function. Usually, the euclidean distance is used, other implementations allow to choose between several distance functions. After assigning each data point to its closest center, the centers gets updated, i.e. the center is the mean coordinate of all the data points assigned to this center. Then the process begins again, assigning the data points again, now to the updated centers. This continues until the process stabilizes and the algorithm converges.
-\\
-Formally, the k-Means problem and the k-Means algorithm are described the following: For a given integer k and a data set of n data points X Teilmenge of Rd, choose k Centers c to minimize the sum of squared error function,
+In the following section we discuss the Lloyed algorithm, usually referred as k-Means in literature and in this work as well. Formally, the k-Means problem and the k-Means algorithm are described the following: For a given integer $k$ and a data set of $n$ data points $X \subset  \mathbb{R}^d$, choose $k$ centers $C$ to minimize the sum of squared error function,
 \begin{equation*}
 sse = \Sigma_{x \in X} min_{c \in C} ||x - c||^2
 \end{equation*}
-When found the centers, we know which data points belongs to the same center and we have found our clustering.
+By finding these center points, each data point is assigned to a center point and we have found our clustering.
+\\ 
+Solving such a problem is NP-hard, however Lloyd~cite proposed a local search solution usually resulting in good groupings. The algorithm starts with $k$ arbitrary center points, typically chosen at random from the data points. Then, each data point is assigned to the closest center, using a distance function. Usually, the euclidean distance is used, other implementations allow to choose between several distance functions. After assigning each data point to its closest center, the centers gets updated, i.e. the center is the mean coordinate of all the data points assigned to this center. Then the process begins again, assigning the data points again, now to the updated centers. This continues until the process stabilizes and the algorithm converges.
 \\
 The k-Means algorithms is described then the follwing:
 
@@ -32,19 +33,20 @@ c_i = \frac{1}{|C_i|} \Sigma_{x \in C_i} x.
 \item Repeat Steps 2 and 3 until $C$ no longer changes, i.e. the algorithm converges.
 \end{enumerate}
 
+This simple algorithm terminates in practice very fast and provides mostly good result.
 
 \section{Example}
 
-$x_0(3,9), x_1(2,5), x_2(5,8), x_3(7,5), x_4(4,2)$
-
-Initial center of the Clusters: $c_0(3,9), c_1(4,2)$
+In this section the k-Means algorithm is presented by an example. Our example data set consists of five data points with two dimensions: $x_0(3,9), x_1(2,5), x_2(5,8), x_3(7,5), x_4(4,2)$. This data will be clustered using the k-Means algorithm, with $k = 2$, i.e. we are searching for two clusters. First, the algorithm starts with an initialization phase: Randomly, we take two instances as initial center points of our two clusters. In this example, these data points are $c_0(3,9)$ and $c_1(4,2)$. 
+\\
+Next, we start the first iteration of the k-Means algorithms and compute the euclidean distance from each data point to $c_0$ and to $c_1$. Each data point is then assigned to the closest cluster, as shown in~\autoref{tab:kmeans_iter_1}.
 
 \begin{table}[htsb]
-  \caption[Computations in Iterations 1]{Computations in Iterations 1.}\label{tab:kmeans_iter_1}
+  \caption[Computations in Iteration 1]{Computations in Iteration 1.}\label{tab:kmeans_iter_1}
   \centering
   \begin{tabular}{l l l l}
     \toprule
-      Distance & $c_0(3,9)$ & $c_1(4,2)$ & Cluster \\
+      Data Point & $c_0(3,9)$ & $c_1(4,2)$ & Cluster \\
     \midrule
         $x_0(3,9)$ & 0.00 & 7.07 & $C_0$ \\
         $x_1(2,5)$ & 4.12 & 3.61 & $C_1$ \\
@@ -55,13 +57,14 @@ Initial center of the Clusters: $c_0(3,9), c_1(4,2)$
   \end{tabular}
 \end{table}
 
+Now, the centers have to be recalculated as the mean of all assigned data points. The result are the updated center points $c_0(4,8.5)$ and $c_1(4.33,4)$. These are used to compute the distances again for each data point as shown in~\autoref{tab:kmeans_iter_2}. As the data points are then assigned to the closest cluster. As the center points have changed, the distances to the centers changes and data points could be assigned to new clusters. In our example the data points are assigned to the same clusters as after Iteration 2. Therefore the algorithm converges and we have found the result.~\autoref{fig:kmeans_example} depicts the two clusters. Cluster $C_0$ with the center point $c_0$ is marked by blue data points and is positioned on the top of the chart, while Cluster $C_1$ with the center point $c_1$ is a broader cluster from the middle of the chart to the bottom.
 
 \begin{table}[htsb]
-  \caption[Computations in Iterations 2]{Computations in Iterations 2.}\label{tab:kmeans_iter_1}
+  \caption[Computations in Iteration 2]{Computations in Iteration 2.}\label{tab:kmeans_iter_2}
   \centering
   \begin{tabular}{l l l l}
     \toprule
-      Distance & $c_0(4,8.5)$ & $c_1(4.33,4)$ & Cluster \\
+      Data Point & $c_0(4,8.5)$ & $c_1(4.33,4)$ & Cluster \\
     \midrule
         $x_0(3,9)$ & 1.12 & 5.17 & $C_0$ \\
         $x_1(2,5)$ & 4.03 & 2.54 & $C_1$ \\
@@ -84,10 +87,10 @@ Initial center of the Clusters: $c_0(3,9), c_1(4,2)$
 
 \section{The k-Means++ Initialization Strategy}
 
-This simple algorithm terminates in practice very fast and provides mostly good result, even though the clustering can be arbitrarily bad for some data sets. Particularly, the random choosing of the initial cluster centers can lead to a bad clustering, which cannot be changed during the clustering process. Therefore,  propose a variation to the k-Means initialization strategy, called k-means++. The centers are still chosen randomly from the data points, but the ata points are weighted according to their distance from the closest center already chosen. Therefore, the probability that of choosing data points as center that are far away get higher, leading to improvements, both in speed and accuracy of the clustering.
+Even though the Lloyd algorithm provides good results in practice, a clustering can be arbitrarily bad for some data sets. Particularly, the random choosing of the initial cluster centers can lead to a bad grouping which cannot be changed during the clustering algorithms. Therefore,~\cite{kmeans++} proposes a variation to the k-Means initialization strategy, called k-Means++. The centers are still chosen randomly from the data points, but the data points are weighted according to their distance from the closest, already chosen center. Hence, the probability of choosing data points as center that are far away from each other increases, leading to enhancements in speed and accuracy of the clustering.
 \\
-Formally, k-means++ can be described the following:
-Let D(x) the shortest distance from a data point the closest, already picked center. 
+Formally, k-Means++ can be described the following:
+Let $D(x)$ the shortest distance from a data point the closest, already picked center. 
 
 \begin{enumerate} 
 \item Take the first center $c1$, chosen uniformly at random from $X$.
@@ -101,9 +104,7 @@ Let D(x) the shortest distance from a data point the closest, already picked cen
 \item Continue as in the standard k-Means algorithm.
 \end{enumerate}
 
-Most clustering tools implement a k-means++ initialization strategy for k-means, therefore we will also test k-means++ on HyPer.
+The authors call the weighting in Step 2 the $D^2$ weighting.
 \\
-Since the algorithm is very popular and easy to understand, makes it suitable for the first implementation of a data mining algorithm on HyPer. All data mining tools we looked at (see related work) are implementing k-Means, which makes it neat to compare regarding the running time. The cluster compactness, i.e. the sum of squared errors is a good quality measurement of the clustering, and allows very good comparability. Since the algorithm is well-defined, we can expect that the data mining tools are implementing the actual k-Means algorithms, only adapting to their programming model. Another nice fact is that many data mining tools also implement k-Means++ as initialization strategy, another thing that can be compared.
-Parts of K-means can be executed in parallel, and since HyPer supports parallel computation, it will be another interesting research to evaluate how single-threaded execution of K-means vs a multi-threaded computation. We are expecting tremendous performance gains executing HyPer on a multicore machine, and it will be interesting to compare these results to the results of big data computing, such as MapReduce or Apache.
-\\ 
-Kkd tree maybe.
+Most clustering tools implement a k-Means++ initialization strategy for k-means, therefore we will also provide this for the k-Means algorithm on HyPer.
+
