@@ -1,7 +1,13 @@
 \chapter{Conclusions and Future Work}\label{chapter:conclusion}
-
+In this work, we have presented a proof-of-concept implementation of the k-Means clustering algorithm as HyPer operator. This chapter provides conclusions of the presented work and addresses open challanges.
 
 \section{Conclusions}
+With main memory databases we are able to relax traditional database constraints and benefit from unprecedented performance gains. The main memory system HyPer can execute OLTP and OLAP queries on the same systems without the need of an additional data warehouse. Such a system provides the opportunities to execute data mining algorithms directly on the database to benefit from data locality, performance and the advantage of using only one system. 
+\\
+After discussing existing systems for data mining, we presented several approaches to implement the k-Means algorithm as a HyPer operator: A C++ driven approach, a LLVM driven approach and a parallel implementation.
+\\
+As result we make the observation that the LLVM version is faster than the C++ version on all data tests, and that our operator is able to compete with existing data mining solutions. In fact, the LLVM approach and the R implementation are usually providing the best results. Only for high dimensional data sets, the HyPer operator presents poor results and is outnumbered by Julia and R's implementation. However, the HyPer operator also provides the opportunity for parallel execution. As data sets grow, the parallel implementation is faster than all the other tools.
+In conclusion, we showed that the k-Means algorithm implemented as HyPer operator can compete and even outperform existing solutions.
 
 \section{Future Work}
 
