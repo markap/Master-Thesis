@@ -136,7 +136,7 @@ The difference in the running time is similar to the network data set even thoug
 \\
 Interestingly, the execution time for the network data set is lower than for the high dimensional data set, even though the network set has a size of 0.019 GB, while the high dimensional data set has only 0.009 GB. Even if we omit the compilation time which stays constant for a growing number of iterations and only look at the execution time the network data set is only for the C++ implemenation and $k = 3$ slower than the high dimensional data set. Apparently, our implementation performs much better for low dimensional data sets.
 \\
-~\autoref{tab:med_serial} and ~\autoref{tab:med_hd_serial} show the same experiment for the medium size and the medium size high dimensional data set. Both consist of 15 million instances, the first of four dimensions and the second of 50 dimensions. The compilation time of the medium size data set is similar to the network data set since both consist of four dimensions. The same is true for the medium size high dimensional data set and the previously used high dimensional data set: Both consist of 50 dimensions and the compilation time is quite similar. This shows us that the compilation time is independent on the data size and only affected by the number of dimensions. However, as the number of instances is growing, the compilation time is not a significant factor for the overall running time anymore, as~\autoref{fig:hyper_15Mxhd} shows: The compilation time is not even visible plotting the data as stacked barcharts.
+~\autoref{tab:med_serial} and ~\autoref{tab:med_hd_serial} show the same experiment for the medium size and the medium size high dimensional data set. Both consist of 15 million instances, the first of four dimensions and the second of 50 dimensions. The compilation time of the medium size data set is similar to the network data set since both consist of four dimensions. The same is true for the medium size high dimensional data set and the previously used high dimensional data set: Both consist of 50 dimensions and the compilation time is quite similar. This shows us that the compilation time is independent on the data size and only affected by the number of dimensions. However, as the number of instances is growing, the compilation time is not a significant factor for the overall running time anymore, as~\autoref{fig:hyper_15Mxhd} shows: The compilation time is not even visible plotting the data as stacked bar charts. Again, the LLVM version shows a much better performance compared to the C++ version. For the medium size data set the overall running time is faster by a factor of 2.5, 1.6 and 1.4 for $k = 3, 10$ and 20, and for the medium size high dimensional data set by a factor of 1.6, 1.5 and 1.5, respectively.
 
 \begin{table}[htsb]
   \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
@@ -171,7 +171,7 @@ Interestingly, the execution time for the network data set is lower than for the
   \end{tabular}
 \end{table}
 
-Obviously the execution time for the high dimensional data set is much larger again. For the C++ implementation the execution time is increased by a factor of 6.8 for $k = 3$, 10.3 for $k = 10$ and 12.6 for $k = 20$. For the LLVM implementation it is 11.2, 10.5, 11.2, respectively. Since the high dimensional data set is actually larger by a factor of 12.7, the values are strongly correlated to the growth of the data set.
+Obviously the execution time for the high dimensional data set is much larger compared to the low dimensional data set: This time the high dimensional data set has the same number of instances but 50 dimensions. For the C++ implementation the execution time is increased by a factor of 6.8 for $k = 3$, 10.3 for $k = 10$ and 12.6 for $k = 20$. For the LLVM implementation it is 11.2, 10.5, 11.2, respectively. Since the high dimensional data (2.79 GB) set is larger than the medium size data set (0.22 GB) by a factor of 12.7, the values are strongly correlated to the growth of the data set.
 
 \begin{figure}[htsb]
   \centering
@@ -181,7 +181,7 @@ Obviously the execution time for the high dimensional data set is much larger ag
 \end{figure}
 
 
-~\autoref{tab:large_serial} shows the same experiment for the large data set. The data set consists of ten dimensions and therefore the compilation time increases compared to the data sets with four dimensions by a factor of around 2. Since the data set has a size of 5.59 GB the difference in the execution time is very significant. Again, the LLVM implementation is faster by around 20 seconds independent of the cluster number $k$.
+Finally,~\autoref{tab:large_serial} shows the same experiment for the large size data set. The data set consists of ten dimensions and therefore the compilation time increases compared to the data sets with four dimensions by a factor of around two. However, since the data set has a size of 5.59 GB we can omit the compilation time since it does not affect the overall running time. Comparing the two versions regarding the overall running time, we observe that the LLVM version provides again much better results and is faster by a factor of 2.0, 1.5 and 1.4 for $k = 3, 10$ and 20 compared to the C++ implementation. This results in a difference of around 20 seconds per iteration between the two implementations.
 
 
 
@@ -202,9 +202,9 @@ Obviously the execution time for the high dimensional data set is much larger ag
 \end{table}
 
 
-In conclusion the compilation time is not affected if the number of instances gets large but only if the number of dimensions grows. The compilation time is similar between the LLVM version and the C++ version. Usually, the execution time outnumbers the compilation time by several factors. The only exception is the small, high dimensional data set as shown in the experiment. Here, the compilation time can be slower than the execution time.
+In conclusion, we observed that the compilation time is not affected by the number of instances but the number of dimensions, where high dimensional data sets slow down the compilation phase. Interestingly, there is no significant difference regarding the compilation time between the two HyPer implementations. 
 \\
-Furthermore the execution time grows by number of instances and is much faster for the LLVM implementation. With equality regarding the compilation and a performance decrease in execution time the LLVM version was for all experiments the best choice regarding the running time of the k-Means algorithm.
+Usually, the execution time outnumbers the compilation time by several factors. The only exception is the small, high dimensional data set as shown in the experiment. Here, the compilation time is slower than the execution time for small $k$. Furthermore the execution time grows by number of instances and is much faster for the LLVM implementation. With equality regarding the compilation and a performance increase regarding the execution time the LLVM version was for all experiments the best choice for the implementation of the k-Means algorithm.
 
 
 \section{Performance Test}\label{section:performance}
@@ -234,7 +234,9 @@ In this section we compare our serial HyPer implementations with Weka, R and Jul
   \label{fig:network_all}
 \end{figure}
 
-The result is presented in~\autoref{tab:network_all1}. We already know that the HyPer LLVM implementation outnumbers the C++ version. For the median, the LLVM implementation is 3.4, 1.8 and 1.5 times faster for $k = 3, 10$ and $20$. Julia is the slowest, our LLVM implementation is 9.5, 4.0 and 3.1 for $k = 3, 10, 20$ times faster. Only the R implementation can compete with our HyPer operator and is even a bit faster. However, all tested programs differ in time per iterations in a few hundred milliseconds therefore the differences are not very significant.~\autoref{fig:network_all} shows the results as a boxplot.
+First, we test against the real-world network data set. The result is presented in~\autoref{tab:network_all1}. As we already know, the HyPer LLVM implementation outnumbers the C++ version. For the median, the LLVM implementation is 3.4, 1.8 and 1.5 times faster for $k = 3, 10$ and $20$. Julia is the slowest, our LLVM implementation is 9.5, 4.0 and 3.1 times faster, respectively. Only the R implementation can compete with our HyPer LLVM operator and is with factors of 0.7, 0.8 and 0.8 for $k = 3, 10$ and 20 even a bit faster. However, all tested programs differ in a few hundred milliseconds therefore the differences are not very significant.
+\\
+~\autoref{fig:network_all} shows the results as a boxplot. We observe that the C++ version, the LLVM version and R are closely together, while Julia performs poorly. Also regarding the variance of the 100 runs, Julia shows the strongest variations and many outliers.
 
 \begin{table}[htsb]
   \caption[High Dimensional - Time per Iteration]{High Dimensional - Time per Iteration.}
@@ -246,8 +248,8 @@ The result is presented in~\autoref{tab:network_all1}. We already know that the 
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
       50  & 0.04 & 0.05 & 0.07 & 0.03 & 0.05 & 0.08 & 0.18 & 0.24 & 0.35 & 0.13 & 0.16 & 0.22 \\
-      50  & 0.04 & 0.05 & 0.07 & 0.04 & 0.06 & 0.10 & 0.21 & 0.34 & 0.40 & 0.13 & 0.16 & 0.22 \\
-      50  & 0.04 & 0.05 & 0.07 & 0.05 & 0.07 & 0.11 & 0.22 & 0.35 & 0.44 & 0.13 & 0.17 & 0.22 \\
+      90  & 0.04 & 0.05 & 0.07 & 0.04 & 0.06 & 0.10 & 0.21 & 0.34 & 0.40 & 0.13 & 0.16 & 0.22 \\
+      95  & 0.04 & 0.05 & 0.07 & 0.05 & 0.07 & 0.11 & 0.22 & 0.35 & 0.44 & 0.13 & 0.17 & 0.22 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -261,9 +263,9 @@ The result is presented in~\autoref{tab:network_all1}. We already know that the 
 
 
 
-Running the same experiment on the high dimensional data set we see a different result as depicted in~\autoref{tab:highdim_all}. As already shown, the HyPer C++ and the LLVM version are slower compared to the network data set even though the data set is smaller by size. R takes almost the same time for both data sets. Interestingly, Julia’s k-Means is now as fast as the R implementation, for $k = 10$ and 20 it is even faster.~\autoref{fig:50000_all} shows this results as a boxplot. 
+Running the same experiment on the high dimensional data set we see a different result, as depicted in~\autoref{tab:highdim_all}. As already shown, the HyPer C++ and the LLVM version are slower compared to the network data set even though the data set is smaller by size. R takes almost the same time for both data sets. Interestingly, Julia’s k-Means algorithm is now as fast as the R implementation, for $k = 10$ and 20 it is even faster. This is also depicted by the boxplot in~\autoref{fig:50000_all}: The HyPer C++ version shows the highest variance with many outliers, while Julia's variance is very small this time.   
 \\
-This result gives us interesting knowledge about the different implementations. Both HyPer operators perform poorly when dimensions increase. An increase in dimensions and a decrease in instances does not affect R significantly. On the other hand, Julia shows much better results as dimensions increases and seems to be optimized for high dimensions: It is 5.4, 4.4 and 4.2 faster for $k = 3, 10$ and 20 times on the high dimensional set compared to the network data. 
+This result gives us interesting knowledge about the different implementations. Both HyPer operators perform poorly when dimensions increase. An increase in dimensions and a decrease in instances does not affect R significantly. On the other hand, Julia shows much better results as dimensions increases and seems to be optimized for high dimensions: It is 5.4, 4.4 and 4.2 times faster for $k = 3, 10$ and 20 on the high dimensional set compared to the network data set, and the variance is much lower. A conversation with Prof. Timothy E. Holy, Ph.D. substantiated this hypothesis\footnote{Julia User Group:~\url{http://bit.ly/1anXGMF}, 25.01.2015.}.
 
 \begin{table}[htsb]
   \caption[Medium Size - Time per Iteration]{Medium Size - Time per Iteration.}
@@ -275,8 +277,8 @@ This result gives us interesting knowledge about the different implementations. 
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
       50  & 5.42 & 7.61 & 10.62 & 0.77 & 1.61 & 2.50 & 2.38 & 3.29 & 4.68 & 0.92 & 2.10 & 3.46 \\
-      50  & 5.43 & 7.65 & 10.71 & 0.79 & 1.63 & 2.55 & 2.57 & 3.44 & 4.77 & 0.94 & 2.14 & 3.51 \\
-      50  & 5.44 & 7.70 & 10.91 & 0.80 & 1.63 & 2.56 & 2.64 & 3.45 & 4.84 & 0.94 & 2.14 & 3.52 \\
+      90  & 5.43 & 7.65 & 10.71 & 0.79 & 1.63 & 2.55 & 2.57 & 3.44 & 4.77 & 0.94 & 2.14 & 3.51 \\
+      95  & 5.44 & 7.70 & 10.91 & 0.80 & 1.63 & 2.56 & 2.64 & 3.45 & 4.84 & 0.94 & 2.14 & 3.52 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -291,8 +293,8 @@ This result gives us interesting knowledge about the different implementations. 
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
       50  & 11.46 & 15.69 & 21.67 & 9.43 & 15.48 & 23.77 & 16.39 & 34.12 & 59.40 & 10.42 & 22.11 & 38.80 \\
-      50  & 11.51 & 15.81 & 21.69 & 9.50 & 15.50 & 23.79 & 16.77 & 36.11 & 59.53 & 10.44 & 22.12 & 38.84 \\
-      50  & 11.65 & 15.83 & 21.70 & 9.64 & 15.58 & 23.79 & 17.29 & 42.15 & 59.57 & 10.45 & 22.13 & 38.84 \\
+      90  & 11.51 & 15.81 & 21.69 & 9.50 & 15.50 & 23.79 & 16.77 & 36.11 & 59.53 & 10.44 & 22.12 & 38.84 \\
+      95  & 11.65 & 15.83 & 21.70 & 9.64 & 15.58 & 23.79 & 17.29 & 42.15 & 59.57 & 10.45 & 22.13 & 38.84 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -315,15 +317,15 @@ This result gives us interesting knowledge about the different implementations. 
 
 
 
-We run the same experiment on the medium size and the medium size high dimensional data set.~\autoref{tab:medium_all} shows the results of the medium size data set. Again, the LLVM version is faster than the C++ version by a factor of 2.5, 1.6 and 1.4 for $k = 3, 10$ and $20$. Since the dataset has only four dimensions Julia performs poorly and is by a factor of 5.9, 3.6 and 3.1 slower compared to the LLVM version. As for the network data set R demonstrates the best performance and is faster than LLVM by a factor of 0.8 for $k = 3$ and 10 and 0.7 for $k = 20$.~\autoref{fig:15M_all} shows the results as a boxplot.
+We perform the same experiment on the medium size and the medium size high dimensional data set.~\autoref{tab:medium_all} shows the results of the medium size data set. Again, the LLVM version is faster than the C++ version by a factor of 2.5, 1.6 and 1.4 for $k = 3, 10$ and $20$. Since the dataset has only four dimensions Julia performs poorly and is by a factor of 5.9, 3.6 and 3.1 slower compared to the LLVM version. As for the network data set R demonstrates the best performance and is faster than LLVM by a factor of 0.8, 0.8 and 0.7 for $k = 3, 10$ and 20. Again we present the result as a boxplot in~\autoref{fig:15M_all}. The variance is small for all used tools, only Julia has a few outliers for $k = 20$.
 \\
-For comparison~\autoref{tab:medium_hd_all} and ~\autoref{fig:15Mxhd_all} depict the result for the medium size high dimensional data set. As before, our own implementation does not perform ideally on high dimensions. For small $k = 3$, the LLVM version is slower than R by a factor of 0.9 but faster than Julia for a factor of 1.1. However, as $k$ grows, R and Julia show slightly better results. Both show a speed up by a factor of 0.7 for $k = 10$, and 0.6 for $k = 20$. 
+For comparison~\autoref{tab:medium_hd_all} and ~\autoref{fig:15Mxhd_all} depict the result for the medium size high dimensional data set. As before, our own implementation does not perform ideally on high dimensions. For $k = 3$, the LLVM version is slower than R by a factor of 0.9 but faster than Julia for a factor of 1.1. However, as $k$ grows, R and Julia show slightly better results. Both show a speed up by a factor of 0.7 for $k = 10$, and 0.6 for $k = 20$, compared to the LLVM version. 
 \\
-Obviously the high dimensional data set takes more time per iteration having a constant number of instances. Julia shows a slow down by a factor of 2 for all $k$'s, R by a factor of 12 for $k = 3$ and 10 for $k = 10$ and 20, the C++ version by a factor of 7, 10, 13 for $k = 3, 10$ and 20 and the LLVM version by a factor of 11 for all $k$'s. Julia perform again the best for high dimensional data. R and HyPer's LLVM operator behave very similar this time. An explanation is that the compilation time is not a limiting factor anymore for the LLVM implementation. For the high dimensional data set with 50000 instances the compilation time is higher than the execution time. This time the data set consists of 15 millions tuples therefore the poor compilation time does not affect the overall performance anymore.
+Obviously the high dimensional data set takes more time per iteration having the same number of instances with a lot more dimensions. However, Julia shows a slow down by a factor of only 2 for all $k$'s, although the dimensions increase from 4 to 50. R shows a slow down by a factor of 12 for $k = 3$ and 10 for $k = 10$ and 20, the C++ version by a factor of 7, 10, 13 for $k = 3, 10$ and 20 and the LLVM version by a factor of 11 for all $k$'s. Julia performs again the best for high dimensional data. R and HyPer's LLVM operator behave very similar this time. An explanation is that the compilation time is not a limiting factor anymore for the LLVM implementation: For the high dimensional data set with 50,000 instances the compilation time was higher than the execution time. This time the data set consists of 15 millions tuples therefore the poor compilation time does not affect the overall performance anymore.
 \\
-As final test we perform the same experiment on the large data set containing 150 million instances, as shown in~\autoref{tab:150M_all}. This time the HyPer LLVM implementation outnumbers all the other tools, the C++ version by a factor of 2.0, 1.5 and 1.4 for $k = 3, 10$ and 20, Julia by a factor of 3.6, 2.2, 2.0, respectively, and even R by a factor of 1.6, 1.2 and 1.1, respectively. This is also shown by a boxplot in~\autoref{fig:150M_all}. Julia's performance is quite compared to the other tools since the data set consist only of ten dimensions. For growing $k$, the R implementation comes very close to the HyPer LLVM version.
+As final test we perform the same experiment on the large data set containing 150 million instances, as shown in~\autoref{tab:150M_all}. This time the HyPer LLVM implementation outnumbers all the other tools, the C++ version by a factor of 2.0, 1.5 and 1.4 for $k = 3, 10$ and 20, Julia by a factor of 3.6, 2.2, 2.0, respectively, and even R by a factor of 1.6, 1.2 and 1.1, respectively. For growing $k$, the R implementation comes very close to the HyPer LLVM version. This result is also depicted in the boxplot in~\autoref{fig:150M_all}.
 \\
-In conclusion the experiments show that HyPer’s k-Means operator can compete with state-of-the-art tools for clustering. Particularly the LLVM implementation demonstrates a good performance and shows similar results to the R implementation of the k-Means algorithm. For high dimensional data sets the LLVM implementation does not perform ideally and is outnumbered by Julia's implementation optimized for high dimensions. If we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these results are affirmative for future development and the implementations of other operators on HyPer. 
+In conclusion, the experiments show that the HyPer k-Means operator can compete with state-of-the-art tools for clustering. Particularly the LLVM implementation demonstrates a good performance and shows similar results to the R implementation of the k-Means algorithm. However, for high dimensional data sets both HyPer operators do not perform ideally and are outnumbered by Julia's implementation optimized for high dimensions. Here is potential for future optimization. Yet, if we take into account that the k-Means algorithm runs on top of an entire database with all its overhead, these results are supporting further development and the implementation of other data mining algorithms as HyPer operators. 
 
 
 
@@ -338,8 +340,8 @@ In conclusion the experiments show that HyPer’s k-Means operator can compete w
       k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
       50  & 65.62 & 90.37 & 132.39 & 29.47 & 48.21 & 72.40 & 37.29 & 62.01 & 92.60 & 18.38 & 40.49 & 67.25 \\
-      50  & 65.72 & 92.01 & 135.87 & 30.80 & 54.73 & 77.27 & 37.50 & 62.41 & 92.86 & 18.44 & 40.72 & 67.57 \\
-      50  & 65.78 & 92.27 & 137.21 & 33.08 & 55.02 & 77.97 & 37.52 & 62.72 & 92.95 & 18.46 & 40.72 & 67.63 \\
+      90  & 65.72 & 92.01 & 135.87 & 30.80 & 54.73 & 77.27 & 37.50 & 62.41 & 92.86 & 18.44 & 40.72 & 67.57 \\
+      95  & 65.78 & 92.27 & 137.21 & 33.08 & 55.02 & 77.97 & 37.52 & 62.72 & 92.95 & 18.46 & 40.72 & 67.63 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -391,9 +393,9 @@ The reason is that for the parallel execution the running time is almost indepen
   \label{fig:final_15M}
 \end{figure}
 
-~\autoref{tab:medium_hd_final} shows the same experiment on the medium high dimensional data set. For this data set the parallel version outperforms the other two implementations for all $k$'s, even for $k = 3$.~\autoref{fig:final_15_hd} depicts that the parallel version is again almost independent of $k$, in contrast to R and LLVM. R grows by a factor of 1.6 from $k = 3$ to $k = 10$, and 1.5 from $k = 10$ to $k = 20$. For LLVM we observe an increase by a factor of 2.1 and 1.8, respectively. The parallel version starts at low 5.84 seconds and grows by a factor 1.4 from $k = 10$ and $k = 20$. 
+~\autoref{tab:medium_hd_final} shows the same experiment on the medium high dimensional data set. For this data set the parallel version outperforms the other two implementations for all $k$'s, even for $k = 3$.~\autoref{fig:final_15_hd} depicts that the parallel version is again almost independent of $k$, in contrast to R and LLVM. R grows by a factor of 1.6 from $k = 3$ to $k = 10$, and 1.5 from $k = 10$ to $k = 20$, for LLVM we observe an increase by a factor of 2.1 and 1.8, respectively and for the parallel version a factor of 1.4 and 1.4, respectively. 
 \\
-So this time, the parallel version not as independent by the cluster number $k$ as for the low dimensional data set of same size. Additionaly, a performance gain is achieved by the ability to handle high dimensional data better: From four dimensions to 50 dimensions, the parallel execution time is only affected by a factor of 4.3, 5.3 and 6.5 for $k = 3, 10$ and 20. R and LLVM are affected by a much higher factor: 12.3, 9.6 and 9.5 for R, 11.3, 10.5 and 11.2 for the LLVM implementation. Only the for high dimensions optimized Julia shows with factors of 2.1, 2.1 and 2.0 better results.
+Even though the parallel version is not as independent by the cluster number $k$ as for the low dimensional data set, the increase in time is much lower. Additionaly, a performance gain is achieved by the ability to handle high dimensional data better: From four dimensions to 50 dimensions, the parallel execution time is only affected by a factor of 4.3, 5.3 and 6.5 for $k = 3, 10$ and 20. R and LLVM are affected by a much higher factor: 12.3, 9.6 and 9.5 for R, 11.3, 10.5 and 11.2 for the LLVM implementation. Only the for high dimensions optimized Julia shows with factors of 2.1, 2.1 and 2.0 better results.
 
 \begin{table}[htsb]
   \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
