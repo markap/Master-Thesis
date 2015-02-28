@@ -102,7 +102,7 @@ Another difference is the change of data types between data and center tuples. W
 
 
 
-\section{Serial Implementation}
+\section{Serial Implementation}\label{section:serial_implementation}
 
 After acquiring a basic understanding of HyPer’s operator model, in particular about the interaction of dynamically generated LLVM code and pre-compiled C++ code, we can discuss the actual implementation of a serial k-Means algorithm. The most interesting part of implementing a data mining operator like k-Means is the decision about how to implement the algorithm, e.g. which parts should reside in the \texttt{compile time system} and which parts in the \texttt{runtime system}. 
 \\
@@ -204,7 +204,7 @@ For implementation we have to compute the distance from the chosen center points
 \\
 For the LLVM version, we still keep the center initialzation in the \texttt{runtime system} to benefit of high level C++ program structures. To execute the k-Means++ algorithm, we have to add a explicitly generated \texttt{getDistance} function to the LLVM code: Even though the LLVM version computes the distance as well, there is no generated function anymore, since the function is just part of LLVM code. Once we have added this function, k-Means++ can be implemented the same way as in the C++ driven approach.
 
-\section{Parallel k-Means}
+\section{Parallel k-Means}\label{section:parallel_implementation}
 
 After looking at single-threaded implementations of the k-Means algorithm, in this section we show an approach to implement k-Means in HyPer in a parallel way to make use of all cores. Keeping in mind that HyPer is a high-performance database system written in C++, it makes already excessive use of multi-threaded programs, therefore it is only logical to add a parallel version of k-Means too. In the following we use the serial C++ version and modify it to allow parallelism. The C++ version is used over the LLVM version because of higher maintainability and readability. 
 \\

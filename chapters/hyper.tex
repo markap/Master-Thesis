@@ -1,6 +1,6 @@
 \chapter{The HyPer Main Memory Database}\label{chapter:hyper}
 \section{Motivation}
-In this chapter, the relational main memory database system HyPer is introduced. HyPer is a database system combining both OLTP and OLAP processing and is the main research subject of this work: Extending HyPer in order to execute data mining algorithms directly in the relational database.
+In this chapter, the relational main memory database system HyPer~\parencite{5767867} is introduced. HyPer is a database system combining both OLTP and OLAP processing and is the main research subject of this work: Extending HyPer in order to execute data mining algorithms directly in the relational database.
 \\
 As already mentioned, historically databases are disk-based systems separated into two parts: An OLTP system, optimized for high rates of mission-critical, transactional write requests, and an OLAP system, executing long-running queries. The data synchronization is ensured by an ETL process that extracts, transforms and loads data from the OLTP to the OLAP system. Since this process implicates heavy load on the database, it is usually done periodically, e.g. over night. 
 \\

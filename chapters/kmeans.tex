@@ -4,14 +4,14 @@ In this chapter the data mining algorithm k-Means is presented. K-means is a wel
 
 \section{Motivation}
  
-We decided to use the k-Means algorithms as proof-of-concept algorithm for data mining in the HyPer database because it is an algorithm widely used and very popular. In fact, a survey of clustering data mining techniques in 2002 states that the algoritm “is by far the most popular clustering algorithm used in scientific and industrial applications”. K-means is also part of the 10 top data mining algorithms identified by the IEEE International Conference on Data Mining (ICDM) in December 2006, next to other famous algorithms such as SVM and the PageRank algorithm. 
+We decided to use the k-Means algorithms as proof-of-concept algorithm for data mining in the HyPer database because it is an algorithm widely used and very popular. In fact, a survey of clustering data mining techniques in 2002 states that the algoritm~\enquote{is by far the most popular clustering algorithm used in scientific and industrial applications}~\parencite{berkhin2002survey}. K-means is also part of the 10 top data mining algorithms identified by the IEEE International Conference on Data Mining (ICDM)~\parencite{top10}, next to other famous algorithms such as SVM and the PageRank algorithm. 
 \\
 Since the algorithm is very popular and easy to understand, makes it suitable for the first implementation of a data mining algorithm on HyPer. To our best knowledge, all major data mining tools are implementing k-Means, which makes it neat to compare regarding the running time. The cluster compactness, i.e. the sum of squared errors is a good quality measurement of the clustering, and allows very good comparability. 
 Parts of K-means can be executed in parallel, and since HyPer supports parallel computation, it will be another interesting research to evaluate how single-threaded execution of K-means vs a multi-threaded computation. We are expecting tremendous performance gains executing HyPer on a multicore machine.
 
 \section{The Lloyd Algorithms}
 
-In the following section we discuss the Lloyed algorithm, usually referred as k-Means in literature and in this work as well. Formally, the k-Means problem and the k-Means algorithm are described the following: For a given integer $k$ and a data set of $n$ data points $X \subset  \mathbb{R}^d$, choose $k$ centers $C$ to minimize the sum of squared error function,
+In the following section we discuss the Lloyed algorithm~\parencite{Lloyd82}, usually referred as k-Means in literature and in this work as well. Formally, the k-Means problem and the k-Means algorithm are described the following: For a given integer $k$ and a data set of $n$ data points $X \subset  \mathbb{R}^d$, choose $k$ centers $C$ to minimize the sum of squared error function,
 \begin{equation*}
 sse = \Sigma_{x \in X} min_{c \in C} ||x - c||^2
 \end{equation*}
