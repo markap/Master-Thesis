@@ -10,7 +10,11 @@ Other areas for data mining are telecommunication network carriers with a huge a
 
 \section{Knowledge Discovery}
 
-After understanding the importance of data mining for gaining knowledge and using this knowledge for further decision making this section defines the data mining steps in greater detail. The term data mining itself often leads to confusion - we are not mining data but instead we are looking for knowledge and interesting patterns in a given data set or database. Therefore, the term knowledge discovery is often more appropriate.
+After understanding the importance of data mining for gaining knowledge and using this knowledge for further decision making this section defines data mining in greater detail. The term data mining itself often leads to confusion - we are not mining data but instead we are looking for knowledge and interesting patterns in a given data set or database. Therefore, the term knowledge discovery is often more appropriate.
+\\
+However, the usage of knowledge discovery and data mining as synonyms is not entirely accurate. Instead, data mining is often seen a part of the knowledge discovery process as depicted in~\autoref{fig:kdd}. This process starts with the preprocessing steps data cleaning, integration, selection and transformation. The actual knowledge gain is then acquired in the data mining step, afterwards the knowledge is evaluated and presented. 
+\\
+In this work we use the term data mining as described in ~\autoref{fig:kdd} since we are mainly interested in the algorithms applied in the data mining phase. Nevertheless, future work on HyPer will cover the entire knowledge discovery chain and implement techniques to clean the data as well to present the results. Therefore, this section gives a profound overview over all the knowledge discovery steps, a stronger focus on the data mining algorithms follows in Section~\ref{section:datamining}.
 
 
 \begin{figure}[htsb]
@@ -19,14 +23,13 @@ After understanding the importance of data mining for gaining knowledge and usin
   \caption[The Process of Knowledge Discovery]{The Process of Knowledge Discovery.}\label{fig:kdd}
 \end{figure}
 
-Usually, data mining is seen as a part of the knowledge discovery process as depicted in~\autoref{fig:kdd}. The knowledge discovery process starts with the preprocessing steps data cleaning, integration, selection and transformation. The actual knowledge gain is then acquired in the data mining step, afterwards the knowledge is evaluated and presented. In this work we use the term data mining as described in ~\autoref{fig:kdd} since we are mainly interested in the algorithms applied in the data mining phase. Nevertheless, in this chapter we give a profound overview over all the knowledge discovery steps.
-\\
-Regarding all those steps, Han et al.~\parencite{dmbook} give a detailed definition of data mining: 
+
+Regarding all those steps, Han et al.~\parencite[210-100]{dmbook} give a detailed definition of data mining: 
 \begin{quote}
 “Data mining is the process of discovering interesting patterns and knowledge from large amounts of data. The data sources can include databases, data warehouses, the Web, other information repositories, or data that are streamed into the system dynamically.”
 \end{quote}
 
-In the following sections we look at each phase in detail and start with data cleaning. 
+In the following sections we discuss each phase in detail and start with data cleaning. 
 
 \subsection{Data Cleaning} 
 The first step of knowledge discovery needs to ensure that the data we are interested in is complete, clean and consistent. Real world data is usually none of it. Data sets are incomplete, i.e. values are missing. If these missing values are crucial for the further data mining process, several data cleaning techniques exist to fill the gaps in the data, e.g. by using an average value such as the mean or median.
@@ -114,5 +117,6 @@ Obviously there is a strong correlation between outlier detection and clustering
 Apart from unsupervised learning, supervised learning can be applied for outlier detection as well. First, data is labeled as normal or outlier and upon that information future data can be classified. This data is then used as training data to classify data sets as outliers or normal data. The challenge of using classification methods for outlier detection is that outliers are very rare by definition, thus finding training instances resembling outliers is not trivial. Therefore typical classification algorithms often have to be adapted and optimized for outlier classification.
 \\
 Apart from clustering and classification techniques, statistical and proximity-based methods are also used for outlier detection.
-
+\\
+The remainder of this work discusses and implements the clustering algorithm k-Means, one of the most well-known and popular data mining algorithm. It is implemented in most modern data mining tools such as R and Julia, and therefore a good comparison can be achieved. The algorithm is introduced in Chapter~\ref{chapter:kmeans} and implemented in Chapter~\ref{chapter:implementation}. The results are then discussed in Chapter~\ref{chapter:evaluation}.
 

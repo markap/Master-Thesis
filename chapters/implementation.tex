@@ -3,7 +3,7 @@
 In this section we present the implementation of the k-Means algorithm as a HyPer operator. First we discuss the general implementation of operators in HyPer, the used programming model and the advantages over existing solutions. Then, the functionality of the k-Means implementation is introduced. Next, the technical details are shown: The data materialization, two different serial implementation approaches and a parallel version. Finally, an integration of the popular k-Means++ initialization strategy is presented.
 
 
-\section{HyPer Operator Fundamentals}
+\section{HyPer Operator Fundamentals}\label{section:operator}
 \subsection{The Consume Produce Programming Model}
 
 In this section we discuss the implementation of operators in HyPer in general. With this model in mind we can then show how k-Means can be implemented to be used in this programming model. 
@@ -18,7 +18,7 @@ HyPer uses a simple programming model for its operators in order to make  compil
 
 \begin{figure}[htsb]
   \centering
-  \includegraphics[scale=0.6]{figures/consume_produce}
+  \includegraphics[scale=0.7]{figures/consume_produce}
   \caption[Consume Produce Sequence Diagram]{Consume Produce Sequence Diagram.}\label{fig:consume_produce_sd}
 \end{figure}
 
@@ -69,7 +69,7 @@ In this section we discuss the data materialization for the k-Means operator. As
 
 \begin{figure}[htsb]
   \centering
-  \includegraphics[scale=0.4]{figures/mat1}
+  \includegraphics[scale=0.05]{figures/mat1_font2}
   \caption[Data Materialization of Incoming Tuples]{Data Materialization of Incoming Tuples.}
   \label{fig:mat1}
 \end{figure}
@@ -79,7 +79,7 @@ This is implemented by using a combination of LLVM and C++ code. In HyPer, LLVM 
 
 \begin{figure}[htsb]
   \centering
-  \includegraphics[scale=0.25]{figures/mat2}
+  \includegraphics[scale=0.03]{figures/mat2_font}
   \caption[Data Materialization using the Runtime and Compile Time System]{Data Materialization using the Runtime and Compile Time System.}
   \label{fig:mat2}
 \end{figure}
