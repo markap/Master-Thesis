@@ -284,17 +284,17 @@ This result gives us interesting knowledge about the different implementations. 
 \end{table}
 
 \begin{table}[htsb]
-  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration.}
+  \caption[Medium Size HD - Time per Iteration]{Medium Size HD - Time per Iteration in seconds.}
   \label{tab:medium_hd_all}
   \centering
-  \begin{tabular}{l l l l l l l l l l l l l}
+  \begin{tabular}{lllll|l l l|l l l|l l l}
     \toprule
-      & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
-      k & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
+      & & \multicolumn{3}{c}{Julia} & \multicolumn{3}{c}{R} & \multicolumn{3}{c}{HyPer C++} & \multicolumn{3}{c}{HyPer LLVM}  \\
+      & \emph{k} & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 & 3 & 10 & 20 \\
     \midrule
-      50  & 11.46 & 15.69 & 21.67 & 9.43 & 15.48 & 23.77 & 16.39 & 34.12 & 59.40 & 10.42 & 22.11 & 38.80 \\
-      90  & 11.51 & 15.81 & 21.69 & 9.50 & 15.50 & 23.79 & 16.77 & 36.11 & 59.53 & 10.44 & 22.12 & 38.84 \\
-      95  & 11.65 & 15.83 & 21.70 & 9.64 & 15.58 & 23.79 & 17.29 & 42.15 & 59.57 & 10.45 & 22.13 & 38.84 \\
+      \parbox[t]{2mm}{\multirow{3}{*}{\rotatebox[origin=c]{90}{\emph{percentile}}}} & 50  & 11.46 & 15.69 & 21.67 & 9.43 & 15.48 & 23.77 & 16.39 & 34.12 & 59.40 & 10.42 & 22.11 & 38.80 \\
+     & 90  & 11.51 & 15.81 & 21.69 & 9.50 & 15.50 & 23.79 & 16.77 & 36.11 & 59.53 & 10.44 & 22.12 & 38.84 \\
+     & 95  & 11.65 & 15.83 & 21.70 & 9.64 & 15.58 & 23.79 & 17.29 & 42.15 & 59.57 & 10.45 & 22.13 & 38.84 \\
     \bottomrule
   \end{tabular}
 \end{table}
