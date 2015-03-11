@@ -1,4 +1,4 @@
-\chapter{Related Work}\label{chapter:related}
+\chapter{Related Systems}\label{chapter:related}
 
 Nowadays data mining landscape can be separated in stand-alone machine learning frameworks such as WEKA and ELKI, general-purpose scientific languages such as R, Julia or the Python library SciPy, and Big Data platforms such as Apache Hadoop and Spark.
 
@@ -10,25 +10,94 @@ Nowadays data mining landscape can be separated in stand-alone machine learning 
 
 \end{itemize}
 
-\section{Tools for Statistical Computing}
+\section{Languages for Statistical Computing}
 
-\begin{itemize}
-\item R: R is a language for statistical computing and data analysis, providing a variety of data mining libraries for all aspects of data mining and machine learning. It comes with rich graphical techniques and is therefore often researchers number one tool to create graphics for publications. Most of R libraries are written in R itself, however, C, C++ and Fortran code can be called at run time and is often used for computationally-intensive tasks. Unlike ELKI and Weka, R does not provide a graphical interface, however, there exist several projects, e.g. JGR or R Commander that aim to provide a R GUI.
+Instead of using Java for data analysis, special purpose languages are very commonly used in the data analysis domain. Although these are often similar to other dynamic languages like Ruby or Javascript, these languages have syntax and built-in data structures that make common data analysis tasks both faster and more concise. This section will briefly cover some of the core features of the R language which is popular for decades, the previously announced Julia language and the Python ecosystem SciPy. SciPy is a special case in this section, since it is not a special purpose language in principle, but shows similar syntax and data structures as R and Julia.
 
-\item SciPy: SciPy is a python environment providing several libraries to perform data mining such as NumPy, pandas and Matplotlib. As R, SciPy comes with algorithms for aggregation, clustering, classification and regression, all embedded in the Python language. Due to the elegance of the Python syntax, its popularity is growing, not only among data scientists, but also for prototyping new algorithms.
+At this scale, you don’t need a fancy distributed framework. You can just load the data into memory and explore it interactively in your favorite scripting language. The dynamic scripting languges allow it very easy get a first prototype written and to play around with the data, since they all provide an interactive shell.
 
-\item Julia: Julia is a relatively new dynamic programming language for scientific computing with a main purpose on high performance. As R, Julia is a programming language itself written mainly in Julia, as well as C and Fortran to gain better performance. For data analysis, external packages are available allowing the execution of state-of-the-art data mining algorithms. Interestingly, Julia uses LLVM-based just-in-time (JIT) compilation, and therefore is often matched with the performance of C. The same compilation technique is used in HyPer, therefore it will be interesting to compare both techniques.
-\end{itemize}
+The other widely used open source language for data analysis is R, a modern version of the S language for statistical computing that originally came out of the Bell Labs around the same time MATLAB was being developed.
+item R: R is a language for statistical computing and data analysis, providing a variety of data mining libraries for all aspects of data mining and machine learning. It comes with rich graphical techniques and is therefore often researchers number one tool to create graphics for publications. Most of R libraries are written in R itself, however, C, C++ and Fortran code can be called at run time and is often used for computationally-intensive tasks. Unlike ELKI and Weka, R does not provide a graphical interface, however, there exist several projects, e.g. JGR or R Commander that aim to provide a R GUI.
+
+R, like S, is designed around a true computer language, and it allows users to add additional functionality by defining new functions. Much of the system is itself written in the R dialect of S, which makes it easy for users to follow the algorithmic choices made. For computationally-intensive tasks, C, C++ and Fortran code can be linked and called at run time. Advanced users can write C code to manipulate R objects directly.
+
+Many users think of R as a statistics system. We prefer to think of it of an environment within which statistical techniques are implemented. R can be extended (easily) via packages. There are about eight packages supplied with the R distribution and many more are available through the CRAN family of Internet sites covering a very wide range of modern statistics.
+The term “environment” is intended to characterize it as a fully planned and coherent system, rather than an incremental accretion of very specific and inflexible tools, as is frequently the case with other data analysis software.
+R is an integrated suite of software facilities for data manipulation, calculation and graphical display. It includes
+
+an effective data handling and storage facility,
+a suite of operators for calculations on arrays, in particular matrices,
+a large, coherent, integrated collection of intermediate tools for data analysis,
+graphical facilities for data analysis and display either on-screen or on hardcopy, and
+a well-developed, simple and effective programming language which includes conditionals, loops, user-defined recursive functions and input and output facilities.
+
+MATLAB and R both share this style of exposing very complex functionality through a single function, often with a huge number of optional parameters. For example, R’s plot function literally can take dozens of graphical parameters, and MATLAB’s isn’t far behind. Functions for optimization, clustering, regression, and so on are similar, if less extreme. 
+Af this scale, you don’t need a fancy distributed framework. You can just load the data into memory and explore it interactively in your favorite scripting language.
+rmance may also be a factor. Although they can do matrix math very fast, thanks to the underlying libraries, both MATLAB and R have notoriously slow language interpreters (and this goes double for the open-source Octave implementation). This discourages writing large libraries or complex abstractions in the languages themselves and tends to relegate the computational core of any new function to a C or FORTRAN extension, which makes the function even more of a daunting black box to the casual hacker.
+
+Julia is a modern language for scientific computing, designed to address some of these concerns. Superficially, Julia strongly resembles MATLAB. For example, here’s how the MATLAB documentation says you should compute the density of a matrix — that is, what proportion of its values are non-zero:
+
+It’s considerably shorter and easier to read, mostly because — even though it’s a core function — it’s implemented in Julia itself.
+How high performance? The Julia site lists a handful of benchmarks comparing R, MATLAB, and Julia (as well as some others). For tasks that mostly exercise the underlying matrix libraries, like random matrix multiplication, they all do similarly well, as does C++; for tasks that exercise basic language features, like a simple recursive fibonacci implementation, Julia is a few times slower than C++ but is around 100 times faster than R and nearly 1000 times faster than MATLAB or Octave. This is a stunning difference, and may sound too good to be true, but although microbenchmarks should certainly be taken with a grain of salt, and these come from an obviously biased source, there’s no reason to think that Julia can’t be that fast. As an existence proof, Google’s V8 Javascript engine gets very similar performance from a language that’s even more dynamic and difficult to optimize; matching it is impressive but certainly not impossible. (Google has Lars Bak, a master VM implementer with decades of experience starting with the influential SELF project, but the Julia team, like anyone else, has access to those same influential papers).
+
+Julia’s weakness, however, is its libraries. R has CRAN, certainly the most impressive collection of statistical libraries available anywhere. MATLAB also has a wide range of toolboxes available, for a price. Julia also lacks a rich development environment, like RStudio, and has only rudimentary support for plotting, which is a pretty critical part of most exploratory data analysis. Julia does, however, have a very active community, and I hope and believe that the rest will come with time; for now, it’s hard to compete with the decades of accumulated contributions that the older languages have.
+item Julia: Julia is a relatively new dynamic programming language for scientific computing with a main purpose on high performance. As R, Julia is a programming language itself written mainly in Julia, as well as C and Fortran to gain better performance. For data analysis, external packages are available allowing the execution of state-of-the-art data mining algorithms. Interestingly, Julia uses LLVM-based just-in-time (JIT) compilation, and therefore is often matched with the performance of C. The same compilation technique is used in HyPer, therefore it will be interesting to compare both techniques.
+
+
+item SciPy: SciPy is a python environment providing several libraries to perform data mining such as NumPy, pandas and Matplotlib. As R, SciPy comes with algorithms for aggregation, clustering, classification and regression, all embedded in the Python language. Due to the elegance of the Python syntax, its popularity is growing, not only among data scientists, but also for prototyping new algorithms.
+
+General purpose python
+
+The leading contender here is almost certainly Python. The NumPy library provides a solid MATLAB-like matrix data structure, with efficient matrix and vector operations. That’s not unusual, however. For example, NArray provides a similar facility for Ruby; Java and the various JVM languages can use Colt, and so on. What makes Python stand out are two more libraries that have been built on top of NumPy:
+
+SciPy includes a very large collection of numerical, statistical, and optimization algorithms.
+Wes McKinney’s Pandas provides R-style Data Frame objects (using NumPy arrays underneath to ensure fast computation), along with a wealth of tools for manipulating them.
+At the same time, Python has a huge number of well-known libraries for the messier parts of analysis. For example, Beautiful Soup is best-of-breed for quickly scraping and parsing real-world HTML. Together with Python’s strong community and innovative environments like iPython and Reinteract, these libraries make Python a compelling alternative: not as tuned to numerics as MATLAB, or to stats as R, or as fast or elegant as Julia, but a useful (and popular) tool for data analysis all the same.
 
 
 \section{Big Data Platforms}
-General about Big Data
+The presented tools in the previous section are great when working with megabytes and gigabytes of data, which is very common. Often, data scientists spend much time on working on a small sample of a larger set, an aggregated results, or the data set is not that big at all.
+\\
+However, as data size grows big data frameworks like Hadoop are receiving a lot of attention: It provides an affordable, reliable and ubiquitous way to spread computation over tens or hundreds of CPUs on commodity hardware.
+In this section we discuss the most important trends of the big data community.
+
 \begin{itemize}
 \item Apache Hadoop: Apache Hadoop is an open-source software for reliable, scalable, distributed computing of large datasets across clusters of computers. The heart of Hadoop is the Hadoop Distributed File System (HDFS) and Hadoop MapReduce, a simple programming model for distributed processing. Since MapReduce programs can be run on up to thousands of machines, it is ideal for Big Data. Several Algorithms can be performed on the MapReduce programming model, e.g. k-Means~\parencite{parallelkmeans}. For our research, it will be interesting to see how HyPer works with Big Data compared to Apache Hadoop.
 
+Apache Hadoop is an open source framework for distributed storage and processing of large sets of data on commodity hardware. Hadoop enables businesses to quickly gain insight from massive amounts of structured and unstructured data.
+
+Numerous Apache Software Foundation projects make up the services required by an enterprise to deploy, integrate and work with Hadoop.  Each project has been developed to deliver an explicit function and each has its own community of developers and individual release cycles.
+
 \item Apache Spark: Apache Spark is a data analytics cluster computing framework, working on top of the Hadoop Distributed File System (HDFS). In contrast to Hadoop’s MapReduce, Spark comes with a richer programming model, leading to tremendous performance gains for some applications. Spark also provides in-memory cluster computing, making it well-suited to data mining algorithms. Regarding the main-memory capabilities of Spark, it will be interesting to compare Spark with HyPer.
 
+Spark is a fast and general processing engine compatible with Hadoop data. It can run in Hadoop clusters through YARN or Spark's standalone mode, and it can process data in HDFS, HBase, Cassandra, Hive, and any Hadoop InputFormat. It is designed to perform both batch processing (similar to MapReduce) and new workloads like streaming, interactive queries, and machine learning.
+First, Spark is intended to enhance, not replace, the Hadoop stack. From day one, Spark was designed to read and write data from and to HDFS, as well as other storage systems, such as HBase and Amazon’s S3. As such, Hadoop users can enrich their processing capabilities by combining Spark with Hadoop MapReduce, HBase, and other big data frameworks.
+
+Second, we have constantly focused on making it as easy as possible for every Hadoop user to take advantage of Spark’s capabilities. No matter whether you run Hadoop 1.x or Hadoop 2.0 (YARN), and no matter whether you have administrative privileges to configure the Hadoop cluster or not, there is a way for you to run Spark! In particular, there are three ways to deploy Spark in a Hadoop cluster: standalone, YARN, and SIMR.
+
+Standalone deployment: With the standalone deployment one can statically allocate resources on all or a subset of machines in a Hadoop cluster and run Spark side by side with Hadoop MR. The user can then run arbitrary Spark jobs on her HDFS data. Its simplicity makes this the deployment of choice for many Hadoop 1.x users.
+
+Hadoop Yarn deployment: Hadoop users who have already deployed or are planning to deploy Hadoop Yarn can simply run Spark on YARN without any pre-installation or administrative access required. This allows users to easily integrate Spark in their Hadoop stack and take advantage of the full power of Spark, as well as of other components running on top of Spark.
+
+Spark In MapReduce (SIMR): For the Hadoop users that are not running YARN yet, another option, in addition to the standalone deployment, is to use SIMR to launch Spark jobs inside MapReduce. With SIMR, users can start experimenting with Spark and use its shell within a couple of minutes after downloading it! This tremendously lowers the barrier of deployment, and lets virtually everyone play with Spark.
+
 \item Apache Mahout:
+Apache™ Mahout is a library of scalable machine-learning algorithms, implemented on top of Apache Hadoop®  and using the MapReduce paradigm. Machine learning is a discipline of artificial intelligence focused on enabling machines to learn without being explicitly programmed, and it is commonly used to improve future performance based on previous outcomes.
+Once big data is stored on the Hadoop Distributed File System (HDFS), Mahout provides the data science tools to automatically find meaningful patterns in those big data sets. The Apache Mahout project aims to make it faster and easier to turn big data into big information.
+
+What Mahout Does
+Mahout supports four main data science use cases:
+
+Collaborative filtering – mines user behavior and makes product recommendations (e.g. Amazon recommendations)
+Clustering – takes items in a particular class (such as web pages or newspaper articles) and organizes them into naturally occurring groups, such that items belonging to the same group are similar to each other
+Classification – learns from existing categorizations and then assigns unclassified items to the best category
+Frequent itemset mining – analyzes items in a group (e.g. items in a shopping cart or terms in a query session) and then identifies which items typically appear together
+How Mahout Works
+Mahout provides an implementation of various machine learning algorithms, some in local mode and some in distributed mode (for use with Hadoop). Each algorithm in the Mahout library can be invoked using the Mahout command line.
+
+The Mahout community decided to move its codebase onto modern data processing systems that offer a richer programming model and more efficient execution than Hadoop MapReduce. Mahout will therefore reject new MapReduce algorithm implementations from now on. We will however keep our widely used MapReduce algorithms in the codebase and maintain them.
+We are building our future implementations on top of a DSL for linear algebraic operations which has been developed over the last months. Programs written in this DSL are automatically optimized and executed in parallel on Apache Spark.
+
 \end{itemize}
 
 \section{Knowledge Discovery in Databases}
