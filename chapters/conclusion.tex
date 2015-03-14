@@ -16,7 +16,7 @@ Many open challenges remain for data mining in HyPer. In this section we discuss
 \\
 Our k-Means implementation can take up to three input parameters: The cluster number $k$, the maximum number of iterations and a verbose option to output statistics about the algorithm, such as the center coordinates and the cluster compactness. For the future we want to enhance the capabilities of k-Means and make our algorithm more flexible. 
 \\
-One possibility is to allow the user to choose a distance function. Our k-Means implements the Euclidean distance, however, for some problems other distances are more appropriate. Therefore we should offer to choose among the Manhattan, Euclidean, Minkowski and Chebyshev distance as well as the cosine similarity.
+One possibility is to allow the user to choose a distance function. Our k-Means implements the euclidean distance, however, for some problems other distances are more appropriate. Therefore we should offer to choose among the manhattan, euclidean, minkowski and chebyshev distance as well as the cosine similarity.
 \\
 Applying normalization before data clustering can improve the final result. This can be either implemented as input parameter for the k-Means algorithm or even better as standalone operator since other data mining algorithms can benefit from a normalization too.
 \\
