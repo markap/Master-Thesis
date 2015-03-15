@@ -1,6 +1,6 @@
 \chapter{Implementation of k-Means in HyPer}\label{chapter:implementation}
 
-In this chapter we present the implementation of the k-Means algorithm as a HyPer operator. First we discuss the general implementation of operators in HyPer, the used programming model and the LLVM code generation. Then, the constraints and requirements of the k-Means implementation are introduced. Next, the implementation details are depicted including data materialization, a C++ driven version, and an LLVM driven version. Additionaly to the random initialization strategy the k-Means++ initialization strategy is implemented as described in Section~\ref{section:kmeans_init}. Finally, a parallel realization of the k-Means operator is discussed.
+In this chapter we present the implementation of the k-Means algorithm as a HyPer operator. First we discuss the general implementation of operators in HyPer, the used programming model and the LLVM code generation. Then, the constraints and requirements of the k-Means implementation are introduced. Next, the implementation details are depicted including data materialization, a C++ driven version, and an LLVM driven version. Additionally to the random initialization strategy the k-Means++ initialization strategy is implemented as described in Section~\ref{section:kmeans_init}. Finally, a parallel realization of the k-Means operator is discussed.
 
 
 \section{HyPer Operator Fundamentals}\label{section:operator}
@@ -153,7 +153,7 @@ Using this implementation approach the main control of the algorithm remains in 
 
 \subsection{An LLVM driven Implementation}
 
-As already stated, LLVM code generation encourages the interaction between LLVM and C++ code which is exploited a lot in the C++ driven implementation of k-Means: The algorithm is implemented in C++ and benefits from high level data structures such as \texttt{unordered\_maps} and the convenience of the C++ syntax, allowing a quick implementation. 
+As already stated, LLVM code generation encourages the interaction between LLVM and C++ code which is exploited a lot in the C++ driven implementation of k-Means: The algorithm is implemented in C++ and benefits from high-level data structures such as \texttt{unordered\_maps} and the convenience of the C++ syntax, allowing a quick implementation. 
 \\
 However, the approach presented in the previous section leads to many calls between the \texttt{compile time} and the \texttt{runtime system}, as shown in ~\autoref{tab:llvm_calls}, which could possibly affect the performance of the operator. Therefore, a second approach has been explored, implementing the k-Means algorithm almost entirely in LLVM code. Only the random initialization of the center points remains in C++. When thinking about such an implementation, we have to be aware that we cannot use C++ high-level data structures anymore, but have to work with what LLVM gives us.
 
@@ -199,7 +199,7 @@ However, in Section~\ref{section:kmeans_init} we figured out that one of the mos
 \\
 For implementation this means that we have to compute the distance from the chosen center points to the data points in the initialization phase too. This can be done very conveniently for the C++ version, as the \texttt{getDistance} function is implemented already. Therefore, the main initialization routine can be written in C++, only the \texttt{getDistance} function is used as generated function.
 \\
-For the LLVM version, we still keep the center initialization in the \texttt{runtime system} to benefit of high level C++ program structures. To realize the k-Means++ algorithm, we have to add an explicitly generated \texttt{getDistance} function to the LLVM code: Even though the LLVM version computes the distance as well, there is no generated function anymore, since the distance generation is part of the generated program. Once we have added this function, k-Means++ can be implemented the same way as in the C++ driven approach.
+For the LLVM version, we still keep the center initialization in the \texttt{runtime system} to benefit of high-level C++ program structures. To realize the k-Means++ algorithm, we have to add an explicitly generated \texttt{getDistance} function to the LLVM code: Even though the LLVM version computes the distance as well, there is no generated function anymore, since the distance generation is part of the generated program. Once we have added this function, k-Means++ can be implemented the same way as in the C++ driven approach.
 
 \section{Parallel k-Means}\label{section:parallel_implementation}
 
