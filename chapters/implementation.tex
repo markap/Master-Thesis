@@ -46,7 +46,7 @@ In conclusion, we have presented the HyPer~\texttt{consume produce} programming 
 This cooperation of LLVM and C++ code regarding programmer friendliness and execution time is one of the dominant patterns in Section~\ref{section:serial_implementation}, where two alternative implementations of the k-Means operator are presented and discussed. 
 
 
-\section{Requirements and Constraints}
+\section{Requirements and Constraints}\label{section:constraint}
 Before discussing the technical implementation details of the k-Means operator, we introduce the requirements and constraints. Obviously, the k-Means algorithm must be implemented as a HyPer operator. That means, the \texttt{consume produce} programming model and the code generation with C++ and LLVM have to be used. The advantage of implementing k-Means as an operator is that it can be used in combination with existing SQL operators, useful for data mining as well, such as grouping and aggregation.
 \\
 Regarding the functional aspects, the operator must be able to be executed in serial and in parallel, to make use of the computing power of modern database hardware.

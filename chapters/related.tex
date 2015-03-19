@@ -1,9 +1,9 @@
 \chapter{Related Systems}\label{chapter:related}
 
-In this chapter we present state-of-the-art data mining software, frameworks and languages, their main characteristics and areas of application. We try to give a broad overview starting with research tools and dynamic languages, big data solutions, software systems that strongly integrate with existing databases, and finally database processing of data mining algorithms.
+In this chapter we present state-of-the-art data mining software, frameworks and languages, their main characteristics and areas of application. We try to give a broad overview starting with research tools and dynamic languages, big data solutions, software systems that strongly integrate with existing databases, and finally database processing of data mining algorithms. For all presented tools we compare their objectives with HyPer's.
 
 \section{Research Frameworks}
-In this section we discuss two data mining tools - Weka~\parencite{Hall:2009:WDM:1656274.1656278} and ELKI~\parencite{DBLP:conf/ssdbm/AchtertKZ08} - that are strongly originated in the research community and are developed at universities. Additionally, Weka is often used for teaching data mining techniques. Nevertheless, both tools, in particular the more mature Weka, are also used in practice by industrial scientists.
+In this section we discuss two data mining tools - Weka~\parencite{Hall:2009:WDM:1656274.1656278} and ELKI~\parencite{DBLP:conf/ssdbm/AchtertKZ08} - that are strongly originated in the research community, both developed at universities. Additionally, Weka is often used for teaching data mining techniques. Nevertheless, both tools, in particular the more mature Weka, are also used in practice by industrial scientists.
 \\
 Weka is a data mining~\enquote{workbench} developed at the University of Waikato that gained big attention in the machine learning and data mining community over the past decade. It provides a large collection of algorithms for all aspects of data mining such as data preprocessing, classification, regression, clustering, association rule mining and visualization into one framework. Weka is written in Java and has with the~\enquote{Weka Explorer} a built-in GUI, but can also be executed directly within Java programs or from the command line. 
 \\
@@ -13,7 +13,7 @@ ELKI (Environment for Developing KDD-Applications Supported by Index Structures)
 \\
 As Weka, ELKI is written in Java and can be either used via graphical user interface, in Java programs or the command line. A major strength of the framework is that it is able to read arbitrary data types and the support of any distance or similarity measure. Therefore, all kinds of complex data types can be integrated into existing algorithms, merely by providing a distance function for the given data type. ELKI also encourages the use of index structures to achieve performance gains when working with high dimensional data sets. 
 \\
-In contrast to Weka and ELKI, 
+In contrast to HyPer, Weka's and ELKI's main focus is not on performance but to improve research and teaching in the data mining field. In particular, ELKI's main goal is it to make newly proposed algorithms more comparable. Therefore, both tools are open for extensions from other research groups. HyPer does not intend to be a general research and teaching tool, even though it is used for internal research at the TUM and might be used for teaching data mining algorithms as well. However, HyPer's main objective is to be a standalone high performance database system with data mining capabilities. Instead of working with csv or arff files, HyPer's data mining operates directly in the database engine, implemented in high performance C++ code. 
 
 
 \section{Dynamic Languages for Statistical Computing}
@@ -34,6 +34,8 @@ SciPy is a Python-based ecosystem enhancing the Python language into a data anal
 SciPy includes a very large collection of numerical, statistical, and optimization algorithms; pandas provides R-style Data Frame objects on top of NumPy data structures for fast computation, and matplotlib~\parencite{Hunter:2007} is a Python 2D plotting library, also used in Julia. 
 \\
 At the same time, Python has already a huge number of well-known libraries, also usable for data analysis. Beautiful Soup\footnote{http://www.crummy.com/software/BeautifulSoup/, 15.03.2015.} is for example a great library to analyze html or xml data. Together with the Python community and other libraries it makes Python a attractive tool for data analysis.
+\\
+HyPer shares some objectives with the presented tools of this section: A simple dynamic language with data mining supporting data structures and plotting functionalities are long-term goals of computational data mining in HyPer. Furthermore, all tools are using low-level Fortran, C or C++ code for computationally intensive operations, which is a performance improvement over Weka and ELKI, both written in Java. However, as Weka and ELKI, a data extraction, transformation and loading (ETL) is necessary to use the data sets with the presented tools in this section. This makes real-time data mining almost impossible - in contrast, HyPer executes data mining algorithms directly on the running database.
 
 
 \section{Big Data Platforms}
@@ -51,6 +53,10 @@ For data stored on the Hadoop Distributed File System, Mahout provides the data 
 Therefore, Mahout provides the implementation of various data mining algorithms for Hadoop, executable in local mode (if MapReduce is not applicable) or in distributed mode. 
 \\
 In 2014, the Mahout community decided to move its code base onto a more modern data processing system that offers a richer programming model and more efficient execution than Hadoop MapReduce: Apache Spark. Apache Spark is a data analytics cluster computing framework able to work on top of the Hadoop Distributed File System, but also with data from Hive, Cassandra or any other Hadoop input format. In contrast to Hadoop’s MapReduce, Spark's richer programming model leads to tremendous performance gains for some applications. Spark also provides in memory cluster computing, making it well-suited for data mining algorithms. 
+\\
+Even though the presented big data solutions show impressive results for large data sets, setting up large clusters of commodity hardware is a complex process. In contrast, HyPer's database and the data mining algorithms run on a single, modern computer. With the growing number of cores and multi-threading capabilities of modern hardware, we also expect good performance for data mining on large data sets with HyPer. Furthermore, big data solutions also require some kind of ETL process, for example to get the data into the HDFS, which is obsolete for HyPer.
+
+
 
 
 \section{Middleware Tools}
@@ -65,7 +71,7 @@ RapidMiner is another tool for predictive analysis with a strong focus on visual
 RapidMiner provides three different analytical engines for data mining. By default, all algorithms and computations are executed in memory. Since random access is often necessary for data mining algorithms this is the fastest approach for medium size data sets. In contrast, in database mining brings the algorithms into the database, therefore the loading phase of the memory processing gets redundant. This solution is offered for different database systems utilizing database functionality. Finally, in Hadoop computation allows to combine the user interface of RapidMiner with the workflows of Hadoop clusters to analyze large data sets.
 \\
 Interestingly, the execution of algorithms in the database is not designed for performance, but for high data locality. RapidMiner's performance is the best when the data is first loaded and executed in the in memory engine. Data mining algorithms in HyPer can benefit from both: High data locality and high performance.
-
+Even though both tools objective is to bring data mining algorithms to the database, often~\enquote{glue} code is necessary to make data mining algorithms work, often affecting the performance of the algorithm. Furthermore, not all database systems are supported by MADlib and RapidMiner.
 
 \section{Data Mining in Databases}
 Software like MADlib and RapidMiner often combine SQL operators with high-level programming constructs. Since this is not ideal for the performance of the algorithm, database vendors such as Oracle and SAP are going one step further and providing their databases with more and more statistical and data mining functionalities using the existing SQL syntax and graphical user interfaces.
@@ -77,6 +83,7 @@ As one of the market leaders for traditional, disk-based databases, Oracle provi
 \\
 On top of this ranks the Oracle Advanced Analytics Options~\parencite{oracle}. It provides techniques for state-of-the-art data mining technologies by implementing in database algorithms in the SQL language and by integrating R algorithms. Oracle Data Mining (ODM) provides algorithms as native SQL for high performance. As previously, an importing or exporting of data to other tools becomes redundant. Users can either use the Oracle Data Miner\footnote{http://www.oracle.com/technetwork/database/options/advanced-analytics/odm/index.html, 15.03.2015.}, a work flow based GUI tool, or a SQL API. Additionally, Oracle R Enterprise (ORE)\footnote{http://www.oracle.com/technetwork/database/database-technologies/r/r-enterprise/overview/index.html, 15.03.2015.} integrates the already presented R language for statistical computing with the database. Own R packages and extensions can be implemented and executed in the database without additional data loading.
 \\
+Even though data mining in SAP Hana and the Oracle database is closely related to HyPer's objective, such as data locality, high performance computing in the database and real-time data analysis, our approach is a slightly different one: SAP HANA provides with PAL data mining capabilities strongly related to the SQL language; Oracle offers data mining algorithms invoked by SQL or by graphical user interface, and enables the execution of R algorithms directly on the database. In contrast, HyPer provides a system with high performance data mining algorithms, that run directly on the database, but can be invoked in a simple dynamic language similar to R, Julia and Python. Therefore, data scientists can benefit from the performance of in database processing of data mining algorithms and the simplicity of well-known functional languages.
 \\
-In this chapter we gave a broad overview over state-of-the-art data mining software, frameworks and languages. A subset of these tools will be used in the experiments in Chapter~\ref{chapter:evaluation} to compare their performance against the performance of the HyPer k-Means operator, which implementation will be described in the next chapter.
+In this chapter we gave a broad overview over state-of-the-art data mining software, frameworks and languages, and their objectives in contrast to HyPer. A subset of these tools will be used in the experiments in Chapter~\ref{chapter:evaluation} to compare their performance against the performance of the HyPer k-Means operator, which implementation will be described in the next chapter.
 
