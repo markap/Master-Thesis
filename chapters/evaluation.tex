@@ -4,7 +4,7 @@ In this chapter we provide an extensive experimental evaluation of the HyPer k-M
 
 
 \section{Data Sets}
-As objective comparison criterion the execution time per iteration is measured in the following experiments, as described in~\ref{section:constraint}. Therefore the different technologies can be compared in a fair way and random initialization and internal improvements for faster convergence do not affect the outcome. For the experiments a real world data set is used and four synthetic data sets have been generated\footnote{The data set generation script can be found in Appendix~\ref{appendix:generator}.}. The synthetic data sets are chosen in a way that both the number of instances and the number of dimensions are varying, covering many real world cases and also allow a reasonable comparison between the data sets. The used data sets are shown in~\autoref{tab:dataset}.
+As objective comparison criterion the execution time per iteration is measured in the following experiments, as described in Section~\ref{section:constraint}. Therefore the different technologies can be compared in a fair way and random initialization and internal improvements for faster convergence do not affect the outcome. For the experiments a real world data set is used and four synthetic data sets have been generated\footnote{The data set generation script can be found in Appendix~\ref{appendix:generator}.}. The synthetic data sets are chosen in a way that both the number of instances and the number of dimensions are varying, covering many real world use cases and also allow a reasonable comparison between the data sets. The used data sets are shown in~\autoref{tab:dataset}.
 
 \begin{table}[htsb]
   \caption[The Data Sets]{The Data Sets.}\label{tab:dataset}
@@ -27,13 +27,13 @@ As objective comparison criterion the execution time per iteration is measured i
 \begin{itemize} 
 \item 3D Network: The first data set contains the 3D spatial road network data of a road network in North Jutland, Denmark~\parencite{3dnet}. It is a real world data set available at the UCI Machine Learning Repository~\parencite{frank2010uci} and consists of 434,874 data points in four dimensions: The id of the road segment, the latitude, the longitude and the altitude of the segment. The id is a large integer, the other dimensions are floating point numbers. The size of the data set is 19.72 MB, therefore it is a rather small data set.
 
-\item High Dimensional: As second data set a synthetic data set with 50,000 data points has been generated. The data set consists of 50 dimensions and is used to resemble a rather small but high dimensional data set. All dimensions are floating point numbers. The size of the data set is 9.50 MB, hence an even smaller then the network data set.
+\item High Dimensional: As second data set a synthetic data set with 50,000 data points has been generated. The data set consists of 50 dimensions and is used to resemble a rather small but high dimensional data set. All dimensions are floating point numbers. The size of the data set is 9.50 MB, hence it is even smaller then the network data set.
 
-\item Medium Size: Next, a larger data set has been created: The medium size data set consists of 15 million data points in four dimensions. The size of the data set is 228.88 MB, therefore almost 12 times larger as the network data set. Data sets with millions of instances are very common numbers for data mining.
+\item Medium Size: Next, a larger data set has been created to test the tools on millions of tuples: The medium size data set consists of 15 million data points in four dimensions. The size of the data set is 228.88 MB, therefore almost 12 times larger than the network data set.
 
 \item Medium Size High Dimensional (HD): For comparing the previous data set with a high dimensional data set, the medium size high dimensional data set has been generated. As the medium size data set, it consists of 15 million data points, this time in 50 dimension. This leads to a growth from 0.23 GB to 2.79 GB. The same number of instances with different dimensions allows us to evaluate how different algorithms behave when dimensions are growing.
 
-\item Large Size: Finally, we generated a even larger data set. The number of instances increased by a factor of 10 compared to the medium data sets resulting in 150 million instances. As number of dimensions, 10 has been chosen as a middle way between the previously chosen 4 and 50 dimensions. This leads to a data set of 5.59 GB.
+\item Large Size: Finally, we generated an even larger data set. The number of instances has increased by a factor of 10 compared to the medium data set, resulting in 150 million instances. As number of dimensions, 10 has been chosen as a middle way between the previously chosen 4 and 50 dimensions. This leads to a data set of 5.59 GB.
 \end{itemize} 
 
 Additionally to varying the data sets, we also vary the cluster number $k$ from 3, 10 and 20 for each data set for each used tool. Since none of the data sets has a natural optimal clustering, there is no perfect $k$, therefore a varying $k$ works best for comparing different tools.
@@ -238,7 +238,7 @@ In this section we compare our serial HyPer implementations with R and Julia’s
   \label{fig:network_all}
 \end{figure}
 
-First, we test against the real-world network data set. The result is presented in~\autoref{tab:network_all1}. As we already know, the HyPer LLVM implementation outnumbers the C++ version. For the median, the LLVM implementation is 3.4, 1.8 and 1.5 times faster for $k = 3, 10$ and $20$. Julia performs the slowest, our LLVM implementation is 9.5, 4.0 and 3.1 times faster, respectively. Only the R implementation can compete with the HyPer LLVM operator and is with 0.7, 0.8 and 0.8 for $k = 3, 10$ and 20 even a bit faster. However, all tested programs differ in a few hundred milliseconds therefore the differences are not very significant.
+First, we test against the real world network data set. The result is presented in~\autoref{tab:network_all1}. As we already know, the HyPer LLVM implementation outnumbers the C++ version. For the median, the LLVM implementation is 3.4, 1.8 and 1.5 times faster for $k = 3, 10$ and $20$. Julia performs the slowest, our LLVM implementation is 9.5, 4.0 and 3.1 times faster, respectively. Only the R implementation can compete with the HyPer LLVM operator and is with 0.7, 0.8 and 0.8 for $k = 3, 10$ and 20 even a bit faster. However, all tested programs differ in a few hundred milliseconds therefore the differences are not very significant.
 \\
 ~\autoref{fig:network_all} depicts the result as a boxplot. We observe that the C++ version, the LLVM version and R are closely together, while Julia lays behind. Also regarding the variance of the 100 runs, Julia shows the strongest variations and many outliers.
 
