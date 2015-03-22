@@ -17,7 +17,7 @@ sse = \Sigma_{x \in X} min_{c \in C} ||x - c||^2.
 \end{equation*}
 After finding these center points, each data point is assigned to its closest center which forms the clustering. 
 \\ 
-Solving such a problem is NP-hard, however Lloyd proposes a local search solution usually resulting in good groupings. The algorithm starts with $k$ arbitrary center points, typically chosen at random from the data points. Then, each data point is assigned to the closest center using the euclidean distance. After assigning each data point, the centers get updated, i.e. the new center is the mean coordinate of all the data points assigned to this center. Then the next iteration begins, assigning the data points again, now to the updated centers. This continues until the process stabilizes and the algorithm converges.
+Solving such a problem is NP-hard, however, Lloyd proposes a local search solution usually resulting in good groupings. The algorithm starts with $k$ arbitrary center points, typically chosen at random from the data points. Then, each data point is assigned to the closest center using the euclidean distance. After assigning each data point, the centers get updated, i.e. the new center is the mean coordinate of all the data points assigned to this center. Then the next iteration begins, assigning the data points again, now to the updated centers. This continues until the process stabilizes and the algorithm converges.
 \\
 Formally, the k-Means algorithm is described as the following:
 
@@ -88,7 +88,7 @@ In this section a made-up example showed the phases of the k-Means algorithm in 
 
 \section{The k-Means++ Initialization Strategy}\label{section:kmeans_init}
 
-Even though the Lloyd algorithm provides good results in practice, the resulting clustering can be arbitrarily bad for some data sets. Particularly, the random choosing of the initial cluster centers can lead to a bad grouping which cannot be changed during the clustering process. Therefore,~\cite{kmeans++} proposes a variation to the k-Means initialization strategy, called k-Means++. The centers are still chosen randomly from the data points, but the data points are weighted according to their distance from the closest, already chosen center. Hence, the probability of choosing data points as center that are far away from each other increases, leading to enhancements in speed and accuracy of the clustering.
+Even though the Lloyd algorithm provides good results in practice, the resulting clustering can be arbitrarily bad for some data sets. Particularly, the random choosing of the initial cluster centers can lead to a bad grouping which cannot be changed during the clustering process. Therefore,~\cite{kmeans++} proposes a variation to the k-Means initialization strategy, called k-Means++. The centers are still chosen randomly from the data points, but the data points are weighted according to their distance from the closest, already chosen center. Hence, the probability of choosing data points that are far away from the already chosen centers increases, leading to enhancements in speed and accuracy of the clustering.
 \\
 Formally, k-Means++ can be described the following:
 Let $D(x)$ be the shortest distance from a data point to the closest, already picked center.
