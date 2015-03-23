@@ -186,7 +186,7 @@ The next step is to update the center tuples. The functionality of the \texttt{r
 
 
 
-Even though the difference between the two presented approaches does not seem to be huge since the overall programming concept remains the same, the difference in the code is significant. In particular using LLVM over high-level C++ constructs adds an overhead in the number of code lines. Therefore, the LLVM code in the second approach is harder to understand and to maintain. On the other hand, we are shrinking the number of calls between the C++ and LLVM system from $(n + 2) \cdot k + n$ down to 4. This leads to performance improvements as we see in Chapter~\ref{chapter:evaluation}, where the LLVM driven approach shows better results for all carried out experiments.
+Even though the difference between the two presented approaches does not seem to be huge since the overall programming concept remains the same, the difference in the code is significant. In particular using LLVM over high-level C++ constructs adds an overhead in the number of code lines. Therefore, the LLVM code in the second approach is harder to understand and to maintain. On the other hand, while the C++ version has $(n + 2) \cdot k + n$ calls from the~\texttt{runtime} to the~\texttt{compile time system} per iteration, the LLVM version has no calls at all during the execution of the algorithm. Instead, it only requires the first and last pointer of the data and center vector at the beginning of the algorithm. This leads to performance improvements as we see in Chapter~\ref{chapter:evaluation}, where the LLVM driven approach shows better results for all carried out experiments.
 
 
 \subsection{Initialization Strategy}\label{sub:init}
