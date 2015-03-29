@@ -60,8 +60,6 @@ The number of iterations is crucial for comparing the running time of different 
 
 \section{Data Materialization}
 
-In this section we discuss the data materialization of the k-Means operator. As already mentioned, materialization is the process of taking incoming tuples out of the CPU registers and write them into memory. Since this decreases the performance of the database, HyPer tries to avoid it, and instead keeps the data in the pipeline as long as possible, i.e. until a~\emph{pipeline breaker} occurs. Unfortunately, k-Means is a~\emph{pipeline breaker}, e.g. center tuples have to be compared with all data tuples to find the minimum distance between them. Therefore, we have to put all tuples into memory. This is depicted in~\autoref{fig:mat1}: Each incoming tuple will be written into main memory when entering the~\texttt{consume} function. 
-
 \begin{figure}[htsb]
   \centerline{
       \includegraphics[scale=0.05]{figures/mat1_font2}
@@ -70,8 +68,9 @@ In this section we discuss the data materialization of the k-Means operator. As 
   \label{fig:mat1}
 \end{figure}
 
-This is implemented by using a combination of LLVM and C++ code. In HyPer, LLVM code resides in the \texttt{compile time system (cts)} while C++ resides in the \texttt{runtime system (rts)}. Since the \texttt{compile time system} is the entry point of an operator, the \texttt{consume} function is called and generates code for each tuple. This generated code is materializing the incoming tuples. A pointer to the materialized chunk of memory is then stored in a C++ vector in the \texttt{runtime system}.~\autoref{fig:mat2} depicts this process: Each tuple is materialized into memory by the \texttt{cts} and can be referenced by a pointer stored in a vector in the \texttt{rts}. This vector can later be used to loop through the entire data set: First by looping through the vector in the~\texttt{rts}, getting the pointer to the memory location, which can then be used to load the tuple from memory into the CPU registers in the \texttt{cts}. 
 
+
+In this section we discuss the data materialization of the k-Means operator. As already mentioned, materialization is the process of taking incoming tuples out of the CPU registers and write them into memory. Since this decreases the performance of the database, HyPer tries to avoid it, and instead keeps the data in the pipeline as long as possible, i.e. until a~\emph{pipeline breaker} occurs. Unfortunately, k-Means is a~\emph{pipeline breaker}, e.g. center tuples have to be compared with all data tuples to find the minimum distance between them. Therefore, we have to put all tuples into memory. This is depicted in~\autoref{fig:mat1}: Each incoming tuple will be written into main memory when entering the~\texttt{consume} function. 
 
 \begin{figure}[htsb]
   \centerline{
@@ -81,13 +80,7 @@ This is implemented by using a combination of LLVM and C++ code. In HyPer, LLVM 
   \label{fig:mat2}
 \end{figure}
 
-For k-Means it is not enough to store only the data tuples. We also need to reserve memory space for the centers. We do this by materializing the first \texttt{k} tuples of the data set two times: Once as storage for data tuples and once as storage for center tuples. Therefore we have two vectors in the \texttt{runtime system}: One for data tuples of length \texttt{n}, and one for centers of length \texttt{k}. This data materialization for k-Means is depicted in ~\autoref{fig:mat3}.
-\\ 
-At this point of the process, all data tuples and centers are materialized and an additional field has been added to all of them: A cluster identifier of type integer. For the center tuples, this field stores the center identifier, which goes from 0 to $k - 1$. For data tuples, this field specifies to which center and therefore to which cluster a data tuple belongs to. Initially, all data tuples are assigned to the center with identifier 0. 
-\\
-Another difference is the cast of data types between data and center tuples. While the data types of data tuples are specified by the table schema, the data types of the center tuples are determined differently since the center is the mean of all the data tuples assigned to that center. Therefore, an integer data value is stored as a numeric data type as center value. Numeric is an exact-value data type for integer and decimal types, and therefore able to store the mean of integer data tuple values. For each data type there exists a rule to cast the respective type from data to center tuple.
-
-
+\FloatBarrier
 
 \begin{figure}[htsb]
   \centerline{
@@ -96,6 +89,22 @@ Another difference is the cast of data types between data and center tuples. Whi
   \label{fig:mat3}
 \end{figure}
 
+
+
+
+
+
+This is implemented by using a combination of LLVM and C++ code. In HyPer, LLVM code resides in the \texttt{compile time system (cts)} while C++ resides in the \texttt{runtime system (rts)}. Since the \texttt{compile time system} is the entry point of an operator, the \texttt{consume} function is called and generates code for each tuple. This generated code is materializing the incoming tuples. A pointer to the materialized chunk of memory is then stored in a C++ vector in the \texttt{runtime system}.~\autoref{fig:mat2} depicts this process: Each tuple is materialized into memory by the \texttt{cts} and can be referenced by a pointer stored in a vector in the \texttt{rts}. This vector can later be used to loop through the entire data set: First by looping through the vector in the~\texttt{rts}, getting the pointer to the memory location, which can then be used to load the tuple from memory into the CPU registers in the \texttt{cts}. 
+
+
+For k-Means it is not enough to store only the data tuples. We also need to reserve memory space for the centers. We do this by materializing the first \texttt{k} tuples of the data set two times: Once as storage for data tuples and once as storage for center tuples. Therefore we have two vectors in the \texttt{runtime system}: One for data tuples of length \texttt{n}, and one for centers of length \texttt{k}. This data materialization for k-Means is depicted in ~\autoref{fig:mat3}.
+\\ 
+At this point of the process, all data tuples and centers are materialized and an additional field has been added to all of them: A cluster identifier of type integer. For the center tuples, this field stores the center identifier, which goes from 0 to $k - 1$. For data tuples, this field specifies to which center and therefore to which cluster a data tuple belongs to. Initially, all data tuples are assigned to the center with identifier 0. 
+\\
+Another difference is the cast of data types between data and center tuples. While the data types of data tuples are specified by the table schema, the data types of the center tuples are determined differently since the center is the mean of all the data tuples assigned to that center. Therefore, an integer data value is stored as a numeric data type as center value. Numeric is an exact-value data type for integer and decimal types, and therefore able to store the mean of integer data tuple values. For each data type there exists a rule to cast the respective type from data to center tuple.
+
+
+\FloatBarrier
 
 \section{Serial Implementation}\label{section:serial_implementation}
 
